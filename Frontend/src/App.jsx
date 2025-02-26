@@ -5,13 +5,13 @@ import { Provider } from "react-redux";
 import "./App.css";
 import user from "./store/userStore";
 import Views from "./Views";
+import MainLayout from "./layouts/MainLayout";
 
 function App() {
   return (
     <>
-      <h1>Social Media app</h1>
       <Provider store={user}>
-        <Views />
+        <MainLayout />
       </Provider>
     </>
   );
