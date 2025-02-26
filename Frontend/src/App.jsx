@@ -1,17 +1,19 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
+
 import { Provider } from "react-redux";
 
 import "./App.css";
 import user from "./store/userStore";
-import Views from "./Views";
-import MainLayout from "./layouts/MainLayout";
+import AuthProvider from "./context/AuthContext";
+import AppRouters from "./routes/AppRouters";
 
 function App() {
   return (
     <>
       <Provider store={user}>
-        <MainLayout />
+        <AuthProvider>
+          <AppRouters />
+        </AuthProvider>
       </Provider>
     </>
   );

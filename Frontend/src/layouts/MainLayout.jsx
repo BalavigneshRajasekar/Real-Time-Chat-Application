@@ -2,14 +2,17 @@
 import React from "react";
 import Nav from "./Nav";
 import Footer from "./Footer";
+import { Outlet } from "react-router-dom";
 
 function MainLayout() {
   return (
     <div>
-      <nav>
-        <Nav></Nav>
-      </nav>
-      <main>{/* Your main content goes here */}</main>
+      <Nav></Nav>
+
+      <main>
+        {/* Your main content goes here */}
+        <Outlet />
+      </main>
       <footer>
         <Footer />
       </footer>
