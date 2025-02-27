@@ -1,11 +1,13 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import userService from "../services/getUser";
+import useAuth from "../hooks/useAuth";
 
 function Home() {
-  const getUser = async () => {
+  const { loading } = useAuth();
+  const getUser = async (key) => {
     try {
-      const response = await userService.getUserData();
+      const response = await userService.getUserData(key);
       console.log(response);
     } catch (e) {
       console.log(e);
@@ -14,7 +16,8 @@ function Home() {
   return (
     <div>
       <h1>Home</h1>
-      <button onClick={getUser}>getUser</button>
+      {loading ? <p>loading...</p> : null}
+      <button onClick={() => getUser("getUser")}>getUser</button>
     </div>
   );
 }
