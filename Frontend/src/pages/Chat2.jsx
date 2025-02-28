@@ -4,16 +4,31 @@ import { useEffect, useState } from "react";
 import socket from "../socket";
 function Chat2() {
   const [message, setMessage] = useState();
+  const [online, setOnline] = useState(false);
   const [messages, setMessages] = useState([]);
   const userId = 2;
   const receiver = 1;
   useEffect(() => {
     console.log("chat2");
 
-    socket.emit("join", userId);
+    socket.emit("join", userId, receiver);
 
     socket.on("receive", (messages) => {
       setMessages((prevMessages) => [...prevMessages, messages]);
+    });
+
+    // This going to check whether user online or not
+    // socket.emit("verifyUser", receiver);
+    // //Now we get the current status of user
+    // socket.on("userOnline", (status) => {
+    //   console.log(status);
+    //   setOnline(status);
+    // });
+
+    socket.emit("onlineUser", (value) => {
+      console.log(value);
+
+      setOnline(value);
     });
 
     return () => {
@@ -31,6 +46,10 @@ function Chat2() {
     <div>
       <h1>User 2</h1>
       <div className="messageBar">
+        <div>
+          <h2>{receiver}</h2>
+          <span>{online ? "Online" : "Offline"}</span>
+        </div>
         {messages.map((msg, i) => (
           <div
             key={i}

@@ -11,7 +11,6 @@ import Chat2 from "../pages/Chat2";
 
 const ProtectedRote = ({ element }) => {
   const { user } = useAuth();
-  console.log(user);
 
   return user ? element : <Forbidden />;
 };
