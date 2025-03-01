@@ -22,6 +22,12 @@ const userSchema = new mongoose.Schema(
     profilePic: {
       type: String,
     },
+    post: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post",
+      },
+    ],
     friends: [
       {
         type: mongoose.Schema.Types.ObjectId,

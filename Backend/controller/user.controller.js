@@ -12,11 +12,8 @@ class UserAuth {
       if (existingUser) {
         return res.status(400).json({ message: "User already exists" });
       }
-      const hashedPassword = await bcrypt.hash(
-        password,
-        bcrypt.genSaltSync(10)
-      );
-      await userService.createUser(username, email, hashedPassword);
+
+      await userService.createUser(username, email, password);
       res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
       res.status(500).json({ message: error.message, error: "server error" });
@@ -38,8 +35,15 @@ class UserAuth {
           .status(401)
           .json({ message: "Invalid password, please try again" });
       }
-      const token = await userService.generateLogToken(user);
-      res.json({ message: "Logged in successfully", token });
+      await userService.generateLogToken(user, res);
+      res.json({
+        message: "User logged in successfully",
+        userData: {
+          userName: user.username,
+          email: user.email,
+          userId: user._id,
+        },
+      });
     } catch (e) {
       res.status(500).json({ message: e.message, error: "server error" });
     }

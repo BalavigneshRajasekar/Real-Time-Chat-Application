@@ -1,20 +1,22 @@
 const User = require("../models/users.model");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 class UserServices {
   async getUserByEmail(email) {
     return await User.findOne({ email: email });
   }
   async createUser(username, email, password) {
+    const hashedPassword = await bcrypt.hash(password, bcrypt.genSaltSync(10));
     const newUser = await User.create({
       email: email,
       username: username,
-      password: password,
+      password: hashedPassword,
     });
     await newUser.save();
     return newUser;
   }
-  async generateLogToken(user) {
+  async generateLogToken(user, res) {
     const token = jwt.sign(
       {
         name: user.username,
@@ -25,7 +27,13 @@ class UserServices {
       { expiresIn: "1h" }
     );
 
-    return token;
+    res.cookie("token", token, {
+      maxAge: 60 * 60 * 1000,
+      httpOnly: true,
+      secure: process.env.Node_ENV !== "development",
+      sameSite: "none", // set to 'none' for cross-site requests
+      path: "/", // set to '/' for all routes
+    });
   }
 }
 
