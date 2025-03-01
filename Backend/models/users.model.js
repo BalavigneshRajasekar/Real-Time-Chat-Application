@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const userSchema = mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
@@ -37,7 +37,7 @@ const userSchema = mongoose.Schema(
   },
   {
     timestamps: true,
-    Collection: "User",
+    collection: "User",
   }
 );
 

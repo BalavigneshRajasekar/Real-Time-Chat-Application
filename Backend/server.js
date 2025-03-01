@@ -24,6 +24,12 @@ const io = socketIo(httpForSocket, {
 // Socket connection entry point
 mainSocket(io);
 
+//Import Routes
+const userAuthRoute = require("./routes/user.auth");
+
+// Apply routes
+server.use("/api/users", userAuthRoute);
+
 // Start the server on port 3000
 httpForSocket.listen(3000, () => {
   console.log("Server is running on port 3000");
