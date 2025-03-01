@@ -5,16 +5,23 @@ import socket from "../socket";
 function Chat2() {
   const [message, setMessage] = useState();
   const [online, setOnline] = useState(false);
+  const [typing, setTyping] = useState(false);
   const [messages, setMessages] = useState([]);
   const userId = 2;
   const receiver = 1;
   useEffect(() => {
     console.log("chat2");
 
-    socket.emit("join", userId, receiver);
+    socket.emit("join", userId);
 
     socket.on("receive", (messages) => {
       setMessages((prevMessages) => [...prevMessages, messages]);
+    });
+
+    socket.on("typing", (value) => {
+      console.log(value);
+
+      setTyping(value);
     });
 
     // This going to check whether user online or not
@@ -42,6 +49,13 @@ function Chat2() {
     setMessage("");
     socket.emit("sendMessage", { userId, receiver, message });
   };
+
+  const handleFocus = () => {
+    socket.emit("listenTyping", receiver);
+  };
+  const handleBlur = () => {
+    socket.emit("stopTyping", receiver);
+  };
   return (
     <div>
       <h1>User 2</h1>
@@ -62,8 +76,11 @@ function Chat2() {
             </span>
           </div>
         ))}
+        {typing && <div>User is typing...</div>}
       </div>
       <input
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         placeholder="write message"

@@ -4,6 +4,7 @@ import socket from "../socket";
 function Chat() {
   const [message, setMessage] = useState();
   const [messages, setMessages] = useState([]);
+  const [typing, setTyping] = useState(false);
   const userId = 1;
   const receiver = 2;
   useEffect(() => {
@@ -12,6 +13,13 @@ function Chat() {
       console.log(message);
       setMessages((prevMessages) => [...prevMessages, message]);
     });
+
+    socket.on("typing", (value) => {
+      console.log(value);
+
+      setTyping(value);
+    });
+
     return () => {
       socket.off("receive");
     };
@@ -23,6 +31,13 @@ function Chat() {
     setMessage("");
     socket.emit("sendMessage", { userId, receiver, message });
   };
+
+  const handleFocus = () => {
+    socket.emit("listenTyping", receiver);
+  };
+  const handleBlur = () => {
+    socket.emit("stopTyping", receiver);
+  };
   return (
     <div>
       <h1>User1</h1>
@@ -30,9 +45,12 @@ function Chat() {
         {messages.map((msg, i) => (
           <div key={i}>{msg.message}</div>
         ))}
+        {typing && <div> typing...</div>}
       </div>
 
       <input
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         onChange={(e) => setMessage(e.target.value)}
         placeholder="add message"
       ></input>

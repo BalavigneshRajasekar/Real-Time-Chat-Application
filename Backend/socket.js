@@ -40,6 +40,24 @@ const mainSocket = (io) => {
       }
     });
 
+    socket.on("listenTyping", (receiverID) => {
+      console.log(receiverID);
+
+      if (manageUser.has(receiverID)) {
+        manageUser.get(receiverID).forEach((receiverSocket) => {
+          io.to(receiverSocket).emit("typing", true);
+        });
+      }
+    });
+
+    socket.on("stopTyping", (receiverID) => {
+      if (manageUser.has(receiverID)) {
+        manageUser.get(receiverID).forEach((receiverSocket) => {
+          io.to(receiverSocket).emit("typing", false);
+        });
+      }
+    });
+
     // Remove user from the list when the client disconnects
     socket.on("disconnect", () => {
       console.log("Client disconnected");
