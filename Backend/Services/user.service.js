@@ -3,8 +3,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 class UserServices {
-  async getUserByEmail(email) {
-    return await User.findOne({ email: email });
+  async getUser(query) {
+    return await User.findOne(query);
   }
   async createUser(username, email, password) {
     const hashedPassword = await bcrypt.hash(password, bcrypt.genSaltSync(10));
@@ -16,9 +16,23 @@ class UserServices {
     await newUser.save();
     return newUser;
   }
+  async findAndUpdateUser(query, updateDate) {
+    console.log(query);
+
+    const user = await User.findOneAndUpdate(
+      { email: query },
+      { $set: updateDate },
+      { new: true }
+    );
+    console.log("service", user);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+  }
 
   async addResetCode(email, code) {
-    const user = await this.getUserByEmail(email);
+    const user = await this.getUser({ email: email });
     if (!user) {
       throw new Error("User not found");
     }

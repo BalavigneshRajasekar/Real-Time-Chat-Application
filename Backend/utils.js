@@ -1,5 +1,6 @@
 const nodeMailer = require("nodemailer");
 const userService = require("./Services/user.service");
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 // Utilities class for various utility functions
@@ -13,6 +14,16 @@ class Utilities {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
+  }
+  static generateToken(user) {
+    const token = jwt.sign(
+      { userId: user._id, email: user.email, name: user.username },
+      process.env.RESET_TOKEN_SECRET,
+      {
+        expiresIn: "180s",
+      }
+    );
+    return token;
   }
   static generateEmail(to, subject, template) {
     const transporter = nodeMailer.createTransport({

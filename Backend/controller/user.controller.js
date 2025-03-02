@@ -7,7 +7,7 @@ class UserAuth {
     try {
       const { username, email, password } = req.body;
 
-      const existingUser = await userService.getUserByEmail(email);
+      const existingUser = await userService.getUser({ email: email });
 
       if (existingUser) {
         return res.status(400).json({ message: "User already exists" });
@@ -23,7 +23,7 @@ class UserAuth {
   async login(req, res) {
     try {
       const { email, password } = req.body;
-      const user = await userService.getUserByEmail(email);
+      const user = await userService.getUser({ email: email });
       if (!user) {
         return res
           .status(401)
