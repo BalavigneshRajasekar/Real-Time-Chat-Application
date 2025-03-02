@@ -1,4 +1,5 @@
 const express = require("express");
+const cookies = require("cookie-parser");
 const http = require("http");
 const socketIo = require("socket.io");
 const cors = require("cors");
@@ -12,6 +13,7 @@ const httpForSocket = http.createServer(server);
 
 //Built in middleware
 server.use(cors()); //Handle Cors for entire app
+server.use(cookies()); //Handle cookies
 server.use(express.json()); //parse incoming payload
 server.use(express.urlencoded({ extended: true })); // accept nested object and array value in form data
 

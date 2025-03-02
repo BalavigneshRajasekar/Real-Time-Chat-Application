@@ -16,6 +16,16 @@ class UserServices {
     await newUser.save();
     return newUser;
   }
+
+  async addResetCode(email, code) {
+    const user = await this.getUserByEmail(email);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    user.resetCode = code;
+    await user.save();
+  }
+
   async generateLogToken(user, res) {
     const token = jwt.sign(
       {

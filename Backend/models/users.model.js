@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema(
     profilePic: {
       type: String,
     },
+    resetCode: {
+      type: String,
+      default: null,
+    },
     post: [
       {
         type: mongoose.Schema.Types.ObjectId,
