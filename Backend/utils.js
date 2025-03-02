@@ -76,7 +76,7 @@ class Utilities {
       );
       result.end(req.file.buffer);
     });
-    return url;
+    return url.secure_url;
   }
 }
 
