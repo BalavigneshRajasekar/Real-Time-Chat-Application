@@ -1,6 +1,6 @@
 const userService = require("../Services/user.service");
 const Utilities = require("../utils");
-const resetTemplate = require("../resetCodeTemplate.js");
+const resetTemplate = require("../Templates/resetCodeTemplate.js");
 
 class ResetPassword {
   async generateResetCode(req, res) {
