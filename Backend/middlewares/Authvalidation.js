@@ -3,7 +3,9 @@ require("dotenv").config();
 
 // middleware to authenticate JWT token
 const authenticateToken = (req, res, next) => {
-  const token = req.cookie.token;
+  const { token } = req.cookies;
+  console.log(token);
+
   try {
     if (!token) {
       return res.status(401).json({ message: "Token is required" });

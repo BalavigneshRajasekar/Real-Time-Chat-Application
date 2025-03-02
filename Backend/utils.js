@@ -1,6 +1,7 @@
 const nodeMailer = require("nodemailer");
 const userService = require("./Services/user.service");
 const jwt = require("jsonwebtoken");
+const cloudinary = require("./config");
 require("dotenv").config();
 
 // Utilities class for various utility functions
@@ -14,6 +15,25 @@ class Utilities {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
+  }
+  static generateLogToken(user, res) {
+    const token = jwt.sign(
+      {
+        name: user.username,
+        email: user.email,
+        id: user._id,
+      },
+      process.env.LOG_TOKEN_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    res.cookie("token", token, {
+      maxAge: 60 * 60 * 1000,
+      httpOnly: true,
+      secure: process.env.Node_ENV !== "development",
+      sameSite: "none", // set to 'none' for cross-site requests
+      path: "/", // set to '/' for all routes
+    });
   }
   static generateToken(user) {
     const token = jwt.sign(
@@ -41,6 +61,22 @@ class Utilities {
       html: template, // Email body in HTML
     };
     return transporter.sendMail(mailOptions);
+  }
+
+  static async uploadImage(req) {
+    const url = await new Promise((resolve, reject) => {
+      const result = cloudinary.uploader.upload_stream(
+        {
+          folder: "profiles",
+        },
+        (error, result) => {
+          if (error) reject(new Error(error));
+          else resolve(result);
+        }
+      );
+      result.end(req.file.buffer);
+    });
+    return url;
   }
 }
 

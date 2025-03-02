@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const userService = require("../Services/user.service");
+const Utilities = require("../utils");
 
 // User Authentication Class
 class UserAuth {
@@ -35,7 +36,8 @@ class UserAuth {
           .status(401)
           .json({ message: "Invalid password, please try again" });
       }
-      await userService.generateLogToken(user, res);
+      //Generate Log Token add to cookies
+      Utilities.generateLogToken(user, res);
       res.json({
         message: "User logged in successfully",
         userData: {
