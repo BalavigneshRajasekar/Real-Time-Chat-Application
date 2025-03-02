@@ -4,8 +4,10 @@ const userService = require("../Services/user.service");
 class AppFLow {
   async addProfile(req, res) {
     const { displayName } = req.body;
-    console.log(displayName);
     try {
+      if (!displayName) {
+        return res.status(400).json({ message: "Display name is required" });
+      }
       // Get the user from the request
       const user = req.user;
       // Upload profile image to cloudinary
