@@ -29,10 +29,12 @@ mainSocket(io);
 //Import Routes
 const userAuthRoute = require("./routes/user.auth");
 const userFlow = require("./routes/user.flow");
+const messageRouter = require("./routes/message.route");
 
 // Apply routes
 server.use("/api/users", userAuthRoute);
 server.use("/api/app", userFlow);
+server.use("/api/message", messageRouter);
 
 // Start the server on port 3000
 httpForSocket.listen(3000, () => {
