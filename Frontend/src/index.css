@@ -1,0 +1,15 @@
+@import "tailwindcss";
+@layer base {
+  h1 {
+    @apply text-2xl font-bold;
+  }
+  h2 {
+    @apply text-xl font-bold;
+  }
+  p {
+    @apply text-gray-600;
+  }
+  button {
+    @apply px-4 py-2 bg-blue-500 text-white rounded;
+  }
+}

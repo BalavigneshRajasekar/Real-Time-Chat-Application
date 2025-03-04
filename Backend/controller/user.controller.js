@@ -40,14 +40,30 @@ class UserAuth {
       Utilities.generateLogToken(user, res);
       res.json({
         message: "User logged in successfully",
-        userData: {
-          userName: user.username,
-          email: user.email,
-          userId: user._id,
-        },
+        user,
       });
     } catch (e) {
       res.status(500).json({ message: e.message, error: "server error" });
+    }
+  }
+  async logout(req, res) {
+    try {
+      res.cookie("token", "", { expiresIn: 0 });
+      res.json({ message: "User logged out successfully" });
+    } catch (e) {
+      res.status(500).json({ message: e.message, error: "server error" });
+    }
+  }
+  async verifyAuthUser(req, res) {
+    try {
+      const user = req.user;
+      if (!user) {
+        throw new Error("User not authenticated");
+      }
+      res.status(200).json(user);
+    } catch (e) {
+      console.log(e);
+      res.status(500).json({ message: "server error" });
     }
   }
 }

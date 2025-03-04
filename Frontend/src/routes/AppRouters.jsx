@@ -1,40 +1,46 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "../pages/Home";
 import MainLayout from "../layouts/MainLayout";
 import useAuth from "../hooks/useAuth";
-import Forbidden from "../pages/Forbidden";
 import Chat from "../pages/Chat";
 import Chat2 from "../pages/Chat2";
-
-const ProtectedRote = ({ element }) => {
-  const { user } = useAuth();
-
-  return user ? element : <Forbidden />;
-};
+import Login from "../pages/Login";
+import Nav from "../layouts/Nav";
+import Footer from "../layouts/Footer";
+import Signup from "../pages/Signup";
 
 function AppRouters() {
+  const { user } = useAuth();
+
   return (
     <div>
       <BrowserRouter>
+        <Nav />
         <Routes>
-          <Route path="/" element={<MainLayout />}>
+          <Route
+            path="/"
+            element={user ? <MainLayout /> : <Navigate to="/login" />}
+          >
             <Route
               path="/home"
-              element={<ProtectedRote element={<Home />} />}
+              element={user ? <Home /> : <Navigate to="login" />}
             ></Route>
-            <Route
-              path="/chat"
-              element={<ProtectedRote element={<Chat />} />}
-            ></Route>
-            <Route
-              path="/chat2"
-              element={<ProtectedRote element={<Chat2 />} />}
-            ></Route>
+            <Route path="/chat" element={<Chat />}></Route>
+            <Route path="/chat2" element={<Chat2 />}></Route>
           </Route>
+          <Route
+            path="/login"
+            element={!user ? <Login /> : <Navigate to="/" />}
+          ></Route>
+          <Route
+            path="/signup"
+            element={!user ? <Signup /> : <Navigate to="/" />}
+          ></Route>
         </Routes>
+        <Footer />
       </BrowserRouter>
     </div>
   );
