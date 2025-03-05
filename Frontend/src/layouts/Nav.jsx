@@ -6,9 +6,9 @@ function Nav() {
   const { user } = useAuth();
   return (
     <div>
-      <div className="p-5 bg-black text-white text-2xl flex justify-between items-center">
+      <div className="p-1 bg-neutral-900 text-white text-2xl flex justify-between items-center">
         <div>
-          <img src="./chat.png" className="w-20"></img>
+          <img src="./chat.png" className="w-11"></img>
         </div>
         <div className="p-5">
           <button>Settings</button>

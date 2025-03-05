@@ -18,7 +18,6 @@ function AppRouters() {
   return (
     <div>
       <BrowserRouter>
-        <Nav />
         <Routes>
           <Route
             path="/"
@@ -40,7 +39,6 @@ function AppRouters() {
             element={!user ? <Signup /> : <Navigate to="/" />}
           ></Route>
         </Routes>
-        <Footer />
       </BrowserRouter>
     </div>
   );
