@@ -3,7 +3,10 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import useAuth from "../hooks/useAuth";
+import Lottie from "lottie-react";
 import { toast } from "react-toastify";
+import appStore from "../animations/appstore.json";
+import playStore from "../animations/playStore.json";
 
 function Signup() {
   const { registerUser, isSigning } = useAuth();
@@ -121,7 +124,7 @@ function Signup() {
         </p>
       </motion.div>
       {/* Section B  for desktop designs */}
-      <div className="w-full hidden md:flex   justify-center">
+      <div className="w-full hidden md:flex md:flex-col items-center">
         <motion.img
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
@@ -131,8 +134,24 @@ function Signup() {
             damping: 20,
           }}
           src="chat.png"
-          className="w-100 "
+          className="w-100"
         ></motion.img>
+        {/* Get the app  */}
+        <div className="flex gap-2 justify-center mt-5 col-span-2 ">
+          {/* App Store Button */}
+          <div className="flex justify-center items-center gap-2 w-50 border border-orange-500 p-4 rounded-4xl">
+            <Lottie animationData={appStore} className="w-14 inline-block" />
+            <p className="text-white">Download on App Store</p>
+          </div>
+          {/* Play store Button */}
+          <div className="flex justify-center items-center gap-2 w-50 border border-orange-500 p-4 rounded-4xl">
+            <Lottie
+              animationData={playStore}
+              className="w-30 inline-block bg-white rounded-2xl h-11"
+            />
+            <p className="text-white ">Download on Play Store</p>
+          </div>
+        </div>
       </div>
     </div>
   );
