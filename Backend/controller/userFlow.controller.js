@@ -26,6 +26,8 @@ class AppFLow {
         .json({ message: e.message, error: "Server error" });
     }
   }
+
+  
 }
 
 module.exports = new AppFLow();

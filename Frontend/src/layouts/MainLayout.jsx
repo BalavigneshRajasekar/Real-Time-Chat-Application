@@ -9,7 +9,7 @@ function MainLayout() {
   // Redirect to home page when the component mounts to avoid unnecessary navigation
   useEffect(() => {
     navigate("/home");
-  }, []);
+  }, [navigate]);
   return (
     <div>
       <Nav />

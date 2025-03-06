@@ -3,7 +3,7 @@ import React from "react";
 import useAuth from "../hooks/useAuth";
 
 function Nav() {
-  const { user } = useAuth();
+  const { user, logoutUser } = useAuth();
   return (
     <div>
       <div className="p-1 bg-neutral-900 text-white text-2xl flex justify-between items-center">
@@ -13,13 +13,12 @@ function Nav() {
         <div className="p-5">
           <button>Settings</button>
 
-          {user ? (
-            <button className="bg-gradient-to-b bg-amber-400 from-orange-400 text-black">
-              Logout
-            </button>
-          ) : (
-            <button>Login</button>
-          )}
+          <button
+            className="bg-gradient-to-b bg-amber-400 from-orange-400 text-black"
+            onClick={logoutUser}
+          >
+            Logout
+          </button>
         </div>
       </div>
     </div>

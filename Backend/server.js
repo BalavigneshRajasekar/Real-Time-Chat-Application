@@ -12,7 +12,12 @@ const server = express();
 const httpForSocket = http.createServer(server);
 
 //Built in middleware
-server.use(cors()); //Handle Cors for entire app
+server.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:5173", // Allow all origins to connect to the server
+  })
+); //Handle Cors for entire app
 server.use(cookies()); //Handle cookies
 server.use(express.json()); //parse incoming payload
 server.use(express.urlencoded({ extended: true })); // accept nested object and array value in form data
