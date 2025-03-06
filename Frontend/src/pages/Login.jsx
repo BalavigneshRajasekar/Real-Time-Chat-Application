@@ -58,7 +58,7 @@ function Login() {
     }
   };
   return (
-    <div className="grid gap-4 md:grid-cols-2 bg-neutral-900 items-center min-h-screen max-h-fit">
+    <div className="grid gap-4 md:grid-cols-2 bg-gradient-to-l from-gray-900 to-sky-950 items-center min-h-screen max-h-fit">
       {/* Section A */}
       <motion.div
         initial={{ scale: 0 }}
@@ -75,6 +75,7 @@ function Login() {
         <form onSubmit={handleSubmit} className="">
           <label className="block text-white">Email :</label>
           <input
+            autoFocus
             value={formData.email}
             onChange={handleChange}
             className="mt-3 p-4 w-full border-2 rounded-md h-14 text-white placeholder:text-gray-400 border-gray-300 focus:outline-none focus:border-amber-600"

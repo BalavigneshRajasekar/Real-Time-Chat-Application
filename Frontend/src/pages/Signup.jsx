@@ -65,7 +65,7 @@ function Signup() {
     }
   };
   return (
-    <div className="grid gap-4 md:grid-cols-2 bg-zinc-900 items-center min-h-screen max-h-fit">
+    <div className="grid gap-4 md:grid-cols-2 bg-gradient-to-r from-gray-900 to-sky-950 items-center min-h-screen max-h-fit">
       {/* Section A Signup */}
       <motion.div
         className="w-full p-10"
@@ -76,14 +76,15 @@ function Signup() {
         <div className="flex justify-center p-10">
           <img src="./chat.png" className="w-20 "></img>
         </div>
-        <h1 className="text-2xl text-center bg-gradient-to-b from-25% bg-orange-400 to-60% bg-amber-500 bg-clip-text text-transparent ">
-          Welcome To the App
-        </h1>
+        <h5 className="text-2xl text-center bg-gradient-to-l from-amber-300 to-amber-900   bg-clip-text text-transparent ">
+          Become a Part of the Chat Community
+        </h5>
         <h1 className="text-white text-center mt-2">Register</h1>
         {/* Signup form */}
         <form onSubmit={handleSubmit}>
           <label className="block text-white">UserName :</label>
           <input
+            autoFocus
             value={formData.username}
             onChange={handleChange}
             className="mt-3 text-white placeholder:text-gray-400 p-4 w-full border-2 rounded-md h-14 border-gray-300 focus:outline-none focus:border-amber-600"
@@ -137,7 +138,12 @@ function Signup() {
           className="w-100"
         ></motion.img>
         {/* Get the app  */}
-        <div className="flex gap-2 justify-center mt-5 col-span-2 ">
+        <motion.div
+          className="flex gap-2 justify-center mt-5 col-span-2 "
+          initial={{ translateY: -180 }}
+          animate={{ translateY: 0 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+        >
           {/* App Store Button */}
           <div className="flex justify-center items-center gap-2 w-50 border border-orange-500 p-4 rounded-4xl">
             <Lottie animationData={appStore} className="w-14 inline-block" />
@@ -151,7 +157,7 @@ function Signup() {
             />
             <p className="text-white ">Download on Play Store</p>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
