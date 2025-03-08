@@ -14,5 +14,6 @@ userFlow.post(
   upload.single("profile"),
   AppFlow.addProfile
 );
+userFlow.get("/get/allUsers", authValidation, AppFlow.getUsers);
 
 module.exports = userFlow;

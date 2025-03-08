@@ -27,7 +27,17 @@ class AppFLow {
     }
   }
 
-  
+  async getUsers(req, res) {
+    try {
+      const users = await userService.getAllUsersExceptSelf(req);
+      return res.status(200).json(users);
+    } catch (e) {
+      console.log(e);
+      return res
+        .status(500)
+        .json({ message: e.message, error: "Server error" });
+    }
+  }
 }
 
 module.exports = new AppFLow();

@@ -30,6 +30,11 @@ class UserServices {
     user.resetCode = code;
     await user.save();
   }
+  async getAllUsersExceptSelf(req) {
+    //When user login req.user attached user id so now we get except user
+    const userId = req.user.id;
+    return await User.find({ _id: { $ne: userId } });
+  }
 }
 
 module.exports = new UserServices();
