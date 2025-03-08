@@ -13,7 +13,7 @@ function MainLayout() {
   return (
     <div>
       <Nav />
-      <main>
+      <main className="bg-gradient-to-tl from-slate-900 to-stone-900 h-screen">
         {/* Your main content goes here */}
         <Outlet />
       </main>

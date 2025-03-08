@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const userService = require("../Services/user.service");
 const Utilities = require("../utils");
+const admin = require("../config/googleLogin");
 
 // User Authentication Class
 class UserAuth {
@@ -13,8 +14,17 @@ class UserAuth {
       if (existingUser) {
         return res.status(400).json({ message: "User already exists" });
       }
-
-      await userService.createUser(username, email, password);
+      // Hash password before save
+      const hashedPassword = await bcrypt.hash(
+        password,
+        bcrypt.genSaltSync(10)
+      );
+      const newUser = {
+        username: username,
+        email: email,
+        password: hashedPassword,
+      };
+      await userService.createUser(newUser);
       res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
       res.status(500).json({ message: error.message, error: "server error" });
@@ -64,6 +74,34 @@ class UserAuth {
     } catch (e) {
       console.log(e);
       res.status(500).json({ message: "server error" });
+    }
+  }
+
+  async googleLogin(req, res) {
+    try {
+      const { tokenId } = req.body;
+      const googleUser = await admin.auth().verifyIdToken({ idToken: tokenId });
+      const { email, picture, name } = googleUser;
+      //Check user with this email already exists in the database
+      const user = await userService.getUser(email);
+
+      if (!user) {
+        //Create new user
+        user = await userService.createUser({
+          username: name,
+          email: email,
+          profilePic: picture,
+        });
+      }
+      //Generate Log Token add to cookies
+      Utilities.generateLogToken(user, res);
+      res.json({
+        message: "User logged in successfully",
+        user: user,
+      });
+    } catch (e) {
+      console.log(e);
+      res.status(500).json({ message: e.message, error: "server error" });
     }
   }
 }

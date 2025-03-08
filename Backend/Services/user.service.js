@@ -1,18 +1,12 @@
 const User = require("../models/users.model");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
 
 class UserServices {
   async getUser(query) {
     return await User.findOne(query);
   }
-  async createUser(username, email, password) {
-    const hashedPassword = await bcrypt.hash(password, bcrypt.genSaltSync(10));
-    const newUser = await User.create({
-      email: email,
-      username: username,
-      password: hashedPassword,
-    });
+  async createUser(userData) {
+    const newUser = await User.create(userData);
     await newUser.save();
     return newUser;
   }
