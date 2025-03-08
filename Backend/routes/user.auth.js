@@ -8,6 +8,7 @@ const userAuthRoute = express();
 
 userAuthRoute.post("/auth/signup", userController.register);
 userAuthRoute.post("/auth/login", userController.login);
+userAuthRoute.post("/auth/google", userController.googleLogin);
 userAuthRoute.post("/auth/logout", userController.logout);
 userAuthRoute.get("/auth/user", authValidation, userController.verifyAuthUser);
 userAuthRoute.post(

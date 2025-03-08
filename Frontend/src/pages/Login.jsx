@@ -8,7 +8,7 @@ import { motion } from "motion/react";
 import useAuth from "../hooks/useAuth";
 import { toast } from "react-toastify";
 function Login() {
-  const { isLogging, loginUser } = useAuth();
+  const { isLogging, loginUser, googleLogin } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -57,6 +57,15 @@ function Login() {
       }
     }
   };
+  const initiateGoogleLogin = async () => {
+    try {
+      const response = await googleLogin();
+      toast.success(response);
+    } catch (e) {
+      console.error(e);
+      toast.error(e.message);
+    }
+  };
   return (
     <div className="grid gap-4 md:grid-cols-2 bg-gradient-to-l from-gray-900 to-sky-950 items-center min-h-screen max-h-fit">
       {/* Section A */}
@@ -102,6 +111,7 @@ function Login() {
           </button>
           <p className="text-center">or</p>
           <button
+            onClick={initiateGoogleLogin}
             type="button"
             className="w-full h-14 p-2 mt-3 rounded-md  text-black bg-white hover:bg-slate-600 text-center active:scale-90 duration-100 ease-in-out"
           >

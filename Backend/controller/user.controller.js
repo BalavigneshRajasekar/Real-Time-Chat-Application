@@ -80,10 +80,10 @@ class UserAuth {
   async googleLogin(req, res) {
     try {
       const { tokenId } = req.body;
-      const googleUser = await admin.auth().verifyIdToken({ idToken: tokenId });
+      const googleUser = await admin.auth().verifyIdToken(tokenId);
       const { email, picture, name } = googleUser;
       //Check user with this email already exists in the database
-      const user = await userService.getUser(email);
+      let user = await userService.getUser({ email: email });
 
       if (!user) {
         //Create new user

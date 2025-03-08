@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { createContext, useEffect, useState } from "react";
 import axiosInstance from "../utilities/axiosConfig";
+import { auth, signInWithPopup, provider } from "../config/firebaseConfig";
 
 export const userAuth = createContext();
 
@@ -12,6 +13,7 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     refreshUser();
+    console.log(import.meta.env.VITE_apiKey);
   }, []);
 
   //Function to create new User
@@ -59,14 +61,33 @@ const AuthProvider = ({ children }) => {
   const refreshUser = async () => {
     try {
       const response = await axiosInstance.get("/users/auth/user");
-      console.log(response.data);
 
       setUser(response.data);
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  };
+
+  //Function to google Login
+  const googleLogin = async () => {
+    try {
+      //Get Auth token from Google
+      const result = await signInWithPopup(auth, provider);
+      const token = await result.user.getIdToken();
+      console.log(token);
+
+      //Send token to the server to get User data
+      const response = await axiosInstance.post("/users/auth/google", {
+        tokenId: token,
+      });
+      setUser(response.data.user);
+      return response.data.message;
     } catch (error) {
       console.error(error);
       throw new Error(error.response.data.message);
     }
   };
+
   return (
     <>
       <userAuth.Provider
@@ -78,6 +99,7 @@ const AuthProvider = ({ children }) => {
           loginUser,
           isLogging,
           logoutUser,
+          googleLogin,
         }}
       >
         {children}
