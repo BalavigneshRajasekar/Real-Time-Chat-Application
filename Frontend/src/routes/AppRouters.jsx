@@ -24,12 +24,20 @@ function AppRouters() {
             element={user ? <MainLayout /> : <Navigate to="/login" />}
           >
             <Route
-              path="/home"
+              path="home"
               element={user ? <Home /> : <Navigate to="login" />}
-            ></Route>
-            <Route path="/chat" element={<Chat />}></Route>
-            <Route path="/chat2" element={<Chat2 />}></Route>
+            >
+              <Route
+                path="chat"
+                element={user ? <Chat /> : <Navigate to="login" />}
+              ></Route>
+              <Route
+                path="chat2"
+                element={user ? <Chat2 /> : <Navigate to="login" />}
+              ></Route>
+            </Route>
           </Route>
+
           <Route
             path="/login"
             element={!user ? <Login /> : <Navigate to="/" />}
