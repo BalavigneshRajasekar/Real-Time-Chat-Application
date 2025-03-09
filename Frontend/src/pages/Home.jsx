@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import UserNameCard from "../components/UserNameCard";
 
 function Home() {
   const [chatScreen, setChatScreen] = useState(false);
@@ -23,16 +24,22 @@ function Home() {
             chatScreen ? "hidden" : "h-screen overflow-x-scroll p-5 w-100 "
           }
         >
-          {Array.from({ length: 100 }).map((value, i) => {
-            return (
-              <div
-                key={i}
-                onClick={changeScreen}
-                className="p-2 cursor-pointer hover:bg-gray-100 text-white"
-              >
-                User {value}
-              </div>
-            );
+          {/* Search bar for search user */}
+          <div>
+            <input
+              type="search"
+              aria-label="Search"
+              placeholder="Search User"
+              className="w-full p-1 rounded-md text-white placeholder:text-white border  focus:border-amber-600"
+            />
+            <p className="px-5 mt-3 text-white py-1 rounded-4xl bg-amber-600 w-fit cursor-pointer">
+              + Group
+            </p>
+          </div>
+
+          {/* List of user name cards */}
+          {Array.from({ length: 10 }).map((value, i) => {
+            return <UserNameCard key={i} changeScreen={changeScreen} />;
           })}
         </aside>
         <aside className={chatScreen ? "h-screen w-screen  border" : "hidden"}>
