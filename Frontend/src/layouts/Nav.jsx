@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import useAuth from "../hooks/useAuth";
+import { IoIosLogOut } from "react-icons/io";
+import { MdOutlineSettings } from "react-icons/md";
 
 function Nav() {
   const { user, logoutUser } = useAuth();
@@ -11,15 +13,13 @@ function Nav() {
           <img src="./chat.png" className="w-11"></img>
           <h2>ChatHub</h2>
         </div>
-        <div className="p-5">
-          <button className="hover:cursor-pointer">Settings</button>
-
-          <button
-            className="bg-gradient-to-b bg-amber-400 from-orange-400 text-black hover:cursor-pointer"
-            onClick={logoutUser}
-          >
-            Logout
-          </button>
+        <div className="flex gap-3  p-5">
+          <p className="inline-block cursor-pointer px-3 py-1 w-fit hover:bg-white rounded-4xl  transition-all ease-in-out hover:scale-110 active:scale-90">
+            <MdOutlineSettings size={"35px"} />
+          </p>
+          <p className="inline-block cursor-pointer px-3 py-1 w-fit hover:bg-white rounded-4xl  transition-all ease-in-out hover:scale-110 active:scale-90">
+            <IoIosLogOut className="inline-block " size={"35px"} />
+          </p>
         </div>
       </div>
     </div>

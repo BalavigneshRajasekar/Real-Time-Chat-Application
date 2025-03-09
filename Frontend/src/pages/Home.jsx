@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import UserNameCard from "../components/UserNameCard";
+import { CiCirclePlus } from "react-icons/ci";
 
 function Home() {
   const [chatScreen, setChatScreen] = useState(false);
@@ -33,7 +34,7 @@ function Home() {
               className="w-full p-1 rounded-md text-white placeholder:text-white border  focus:border-amber-600"
             />
             <p className="px-5 mt-3 text-white py-1 rounded-4xl bg-amber-600 w-fit cursor-pointer">
-              + Group
+              <CiCirclePlus className="inline-block" size={"25px"} /> Group
             </p>
           </div>
 
@@ -42,9 +43,17 @@ function Home() {
             return <UserNameCard key={i} changeScreen={changeScreen} />;
           })}
         </aside>
-        <aside className={chatScreen ? "h-screen w-screen  border" : "hidden"}>
+        <aside
+          className={
+            chatScreen ? "h-screen w-screen  border" : "hidden md:block w-full"
+          }
+        >
           <h1 className="text-white">Hello</h1>
           <button onClick={changeScreen}>Back</button>
+          {/* Render chat component */}
+
+          <p className="text-center  mt-50 ">Start the Conversation</p>
+
           <Outlet />
         </aside>
       </div>
