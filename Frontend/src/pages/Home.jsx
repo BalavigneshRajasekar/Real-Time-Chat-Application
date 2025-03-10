@@ -2,27 +2,18 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import UserNameCard from "../components/UserNameCard";
-import { CiCirclePlus } from "react-icons/ci";
 import { useSocket } from "../hooks/useSocket";
-import { Avatar } from "antd";
 import { useSelector } from "react-redux";
-import useAuth from "../hooks/useAuth";
 import Chat2 from "./Chat2";
+import SearchBar from "../components/SearchBar";
 
 function Home() {
   const socket = useSocket();
-  const { user } = useAuth();
   const navigate = useNavigate();
   const [receiverData, setReceiverData] = useState(null);
   const receivers = useSelector((state) => state.users.receiverData);
   const [chatScreen, setChatScreen] = useState(false);
-  useEffect(() => {
-    console.log(user);
-    console.log(receiverData);
-
-    socket.emit("join", 1);
-    console.log(chatScreen);
-  }, []);
+  useEffect(() => {}, []);
 
   const changeScreen = (value) => {
     console.log(value);
@@ -38,26 +29,13 @@ function Home() {
       <div className="flex gap-2 w-screen">
         <aside
           className={
-            chatScreen ? "hidden" : "h-screen overflow-x-scroll p-5 w-100 "
+            chatScreen
+              ? "hidden md:block"
+              : "h-screen overflow-x-scroll p-5 w-100 "
           }
         >
           {/* Search bar for search user */}
-          <div>
-            <div className="flex gap-3">
-              <Avatar src={user.profilePic}></Avatar>
-              <p className="text-white">{user.username}</p>
-            </div>
-            <input
-              type="search"
-              aria-label="Search"
-              placeholder="Search User"
-              className="w-full p-1 mt-3 rounded-md text-white placeholder:text-white border  focus:border-amber-600"
-            />
-            <p className="px-5 mt-3 text-white py-1 rounded-4xl bg-amber-600 w-fit cursor-pointer">
-              <CiCirclePlus className="inline-block" size={"25px"} /> Group
-            </p>
-          </div>
-
+          <SearchBar />
           {/* List of user name cards */}
           {receivers &&
             receivers.map((value, i) => {

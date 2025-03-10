@@ -3,6 +3,9 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { useSocket } from "../hooks/useSocket";
+import { RxAvatar } from "react-icons/rx";
+import { IoMdArrowBack } from "react-icons/io";
+import { Avatar } from "antd";
 
 function Chat2({ receiverData, changeScreen }) {
   const socket = useSocket();
@@ -62,13 +65,33 @@ function Chat2({ receiverData, changeScreen }) {
   };
   return (
     <div>
-      <button onClick={() => changeScreen(receiverData)}> back</button>
-      <h1>{receiverData.username}</h1>
-      <div className="messageBar">
+      {/* Chat screen headers */}
+      <div className="bg-gray-300 flex gap-3 p-2 rounded-md">
         <div>
-          <h2>{receiverData._id}</h2>
-          <span>{online ? "Online" : "Offline"}</span>
+          <IoMdArrowBack
+            size={"30px"}
+            className="cursor-pointer hover:text-gray-700 inline-block"
+            onClick={() => changeScreen(receiverData)}
+          />
+          <Avatar
+            size={"large"}
+            src={
+              receiverData.profilePic ? (
+                receiver.profilePic
+              ) : (
+                <RxAvatar className="inline-block text-gray-800 text-4xl" />
+              )
+            }
+          ></Avatar>
         </div>
+        <div>
+          <h2>{receiverData.username}</h2>
+          <p>{online ? "Online" : "Offline"}</p>
+        </div>
+      </div>
+
+      {/* Message section */}
+      <div className="flex-1 overflow-y-auto h-screen">
         {messages.map((msg, i) => (
           <div
             key={i}
@@ -81,16 +104,8 @@ function Chat2({ receiverData, changeScreen }) {
             </span>
           </div>
         ))}
-        {typing && <div>User is typing...</div>}
       </div>
-      <input
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        placeholder="write message"
-      ></input>
-      <button onClick={sendMessage}> send</button>
+      {/* Message input section */}
     </div>
   );
 }
