@@ -1,6 +1,6 @@
 const mainSocket = (io) => {
   const manageUser = new Map();
-  
+
   io.on("connection", (socket) => {
     console.log("New client connected" + socket.id);
     console.log(manageUser);
@@ -23,10 +23,15 @@ const mainSocket = (io) => {
           io.to(socketId).emit("receive", messages);
         }
       });
-      // If receiver has multiple open devices we need to send all open devices
-      receiverSocketId.forEach((socketId) => {
-        io.to(socketId).emit("receive", messages);
-      });
+
+      // First verify user is joined the chat if not there is no socket ID for the user
+      // if not we need to save the msg as not delivered
+      if (receiverSocketId) {
+        // If receiver has multiple open devices we need to send all open devices
+        receiverSocketId.forEach((socketId) => {
+          io.to(socketId).emit("receive", messages);
+        });
+      }
     });
 
     // Verify user online status

@@ -10,10 +10,13 @@
 .user {
   justify-content: end;
   margin-right: 10px;
+  color: white;
 }
 .sender {
   justify-content: start;
   margin-left: 10px;
+  color: white;
 }
 .userClr {
+  background-color: red;
 }

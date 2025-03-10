@@ -6,19 +6,18 @@ import { useSocket } from "../hooks/useSocket";
 import { RxAvatar } from "react-icons/rx";
 import { IoMdArrowBack } from "react-icons/io";
 import { Avatar } from "antd";
+import useAuth from "../hooks/useAuth";
 
 function Chat2({ receiverData, changeScreen }) {
   const socket = useSocket();
+  const { user } = useAuth();
   const [message, setMessage] = useState();
   const [online, setOnline] = useState(false);
   const [typing, setTyping] = useState(false);
   const [messages, setMessages] = useState([]);
-  const userId = 2;
-  const receiver = 1;
+  const userId = user._id;
+  const receiver = receiverData._id;
   useEffect(() => {
-    console.log("chat2");
-    console.log(receiverData);
-
     socket.emit("join", userId);
 
     socket.on("receive", (messages) => {
@@ -77,7 +76,7 @@ function Chat2({ receiverData, changeScreen }) {
             size={"large"}
             src={
               receiverData.profilePic ? (
-                receiver.profilePic
+                receiverData.profilePic
               ) : (
                 <RxAvatar className="inline-block text-gray-800 text-4xl" />
               )
@@ -95,17 +94,43 @@ function Chat2({ receiverData, changeScreen }) {
         {messages.map((msg, i) => (
           <div
             key={i}
-            className={`content ${msg.userId === userId ? "user" : "sender"}`}
+            className={`content ${
+              msg.userId === userId ? "user" : "sender"
+            } p-5`}
           >
             <span
               className={` ${msg.userId === userId ? "userClr" : "senderClr"}`}
             >
+              {msg.userId !== userId && (
+                <Avatar
+                  src={
+                    receiverData.profilePic ? (
+                      receiverData.profilePic
+                    ) : (
+                      <RxAvatar className="inline-block text-gray-500 text-2xl" />
+                    )
+                  }
+                ></Avatar>
+              )}
               {msg.message}
             </span>
           </div>
         ))}
       </div>
       {/* Message input section */}
+      <div className="flex items-center gap-2 p-2 bg-gray-200 rounded-md fixed bottom-1 w-full ">
+        <input
+          className="outline-0"
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Type a message..."
+        />
+        <button onClick={sendMessage} disabled={!message}>
+          Send
+        </button>
+      </div>
     </div>
   );
 }

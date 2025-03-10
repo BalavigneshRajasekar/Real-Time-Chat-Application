@@ -22,7 +22,7 @@ class Utilities {
         username: user.username,
         profilePic: user.profilePic,
         email: user.email,
-        id: user._id,
+        _id: user._id,
       },
       process.env.LOG_TOKEN_SECRET,
       { expiresIn: "1h" }

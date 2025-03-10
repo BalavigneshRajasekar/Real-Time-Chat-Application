@@ -32,7 +32,7 @@ class UserServices {
   }
   async getAllUsersExceptSelf(req) {
     //When user login req.user attached user id so now we get except user
-    const userId = req.user.id;
+    const userId = req.user._id;
     return await User.find({ _id: { $ne: userId } });
   }
 }
