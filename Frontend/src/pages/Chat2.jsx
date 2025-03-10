@@ -1,8 +1,11 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { useEffect, useState } from "react";
-import socket from "../socket";
-function Chat2() {
+import { useSocket } from "../hooks/useSocket";
+
+function Chat2({ receiverData, changeScreen }) {
+  const socket = useSocket();
   const [message, setMessage] = useState();
   const [online, setOnline] = useState(false);
   const [typing, setTyping] = useState(false);
@@ -11,6 +14,7 @@ function Chat2() {
   const receiver = 1;
   useEffect(() => {
     console.log("chat2");
+    console.log(receiverData);
 
     socket.emit("join", userId);
 
@@ -58,10 +62,11 @@ function Chat2() {
   };
   return (
     <div>
-      <h1>User 2</h1>
+      <button onClick={() => changeScreen(receiverData)}> back</button>
+      <h1>{receiverData.username}</h1>
       <div className="messageBar">
         <div>
-          <h2>{receiver}</h2>
+          <h2>{receiverData._id}</h2>
           <span>{online ? "Online" : "Offline"}</span>
         </div>
         {messages.map((msg, i) => (

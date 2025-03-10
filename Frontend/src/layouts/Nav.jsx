@@ -17,7 +17,10 @@ function Nav() {
           <p className="inline-block cursor-pointer px-3 py-1 w-fit hover:bg-white rounded-4xl  transition-all ease-in-out hover:scale-110 active:scale-90">
             <MdOutlineSettings size={"35px"} />
           </p>
-          <p className="inline-block cursor-pointer px-3 py-1 w-fit hover:bg-white rounded-4xl  transition-all ease-in-out hover:scale-110 active:scale-90">
+          <p
+            onClick={logoutUser}
+            className="inline-block cursor-pointer px-3 py-1 w-fit hover:bg-white rounded-4xl  transition-all ease-in-out hover:scale-110 active:scale-90"
+          >
             <IoIosLogOut className="inline-block " size={"35px"} />
           </p>
         </div>

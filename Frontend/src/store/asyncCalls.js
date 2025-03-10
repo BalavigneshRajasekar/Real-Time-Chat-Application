@@ -1,19 +1,16 @@
 /* eslint-disable no-unused-vars */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axiosInstance from "../utilities/axiosConfig";
 
-//Create Async handle Functions
+//Get Receiver details when app loads to show user to message
 export const getUserData = createAsyncThunk(
-  "get/UserData",
+  "get/ReceiverData",
   async (Id, thunkAPI) => {
     try {
-      console.log(Id);
+      const response = await axiosInstance("/app/get/allUsers");
+      console.log(response);
 
-      const response = await fetch("https://dummyjson.com/users");
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return await response.json();
+      return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
     }
@@ -23,7 +20,7 @@ export const getUserData = createAsyncThunk(
 const asyncCalls = createSlice({
   name: "asyncCalls",
   initialState: {
-    data: [],
+    receiverData: [],
     error: null,
     loading: false,
   },
@@ -35,7 +32,7 @@ const asyncCalls = createSlice({
       })
       .addCase(getUserData.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload;
+        state.receiverData = action.payload;
       })
       .addCase(getUserData.rejected, (state, action) => {
         state.loading = false;

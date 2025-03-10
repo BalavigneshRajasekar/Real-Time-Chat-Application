@@ -19,7 +19,8 @@ class Utilities {
   static generateLogToken(user, res) {
     const token = jwt.sign(
       {
-        name: user.username,
+        username: user.username,
+        profilePic: user.profilePic,
         email: user.email,
         id: user._id,
       },
