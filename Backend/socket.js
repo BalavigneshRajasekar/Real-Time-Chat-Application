@@ -12,11 +12,12 @@ const mainSocket = (io) => {
       manageUser.get(userId).add(socket.id); // adding socket id to the user list
       console.log("User has joined", manageUser);
       //Once user has joined online data share to all joiners
-      io.emit("onlineUser", Array.from(manageUser.keys()));
+      io.emit("onlineUsers", Array.from(manageUser.keys()));
     });
 
-    socket.on("sendMessage", ({ userId, receiver, message }) => {
-      const messages = { senderID: userId, chat: message };
+    socket.on("sendMessage", ({ userId, receiver, text }) => {
+      const messages = { senderID: userId, receiverID: receiver, chat: text };
+      console.log(messages);
       const receiverSocketId = manageUser.get(receiver); // this has socket Id align with receiver ID
       const userSocketId = manageUser.get(userId); // this has socket Id align with user ID
       //If user has multiple open devices we need to send users own msg to him multiple open devices
@@ -74,6 +75,8 @@ const mainSocket = (io) => {
           manageUser.delete(userId);
         }
       });
+      //Once user has disconnected update the online user data
+      io.emit("onlineUsers", Array.from(manageUser.keys()));
     });
   });
 };

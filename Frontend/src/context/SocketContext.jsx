@@ -8,6 +8,7 @@ export const SocketContext = createContext();
 const SocketProvider = ({ children }) => {
   const { user } = useAuth();
   const [socket, SetSocket] = useState(null);
+  const [onlineUsers, setOnlineUsers] = useState();
 
   useEffect(() => {
     const socket = io("http://localhost:3000");
@@ -19,13 +20,20 @@ const SocketProvider = ({ children }) => {
     if (user) {
       socket.emit("join", user._id);
     }
+    //Get online users when connected
+    socket.on("onlineUsers", (Users) => {
+      setOnlineUsers(Users);
+    });
+
     //Disconnect socket connection when component unmounts
     return () => {
       socket.disconnect();
     };
   }, [user]);
   return (
-    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
+    <SocketContext.Provider value={{ socket, onlineUsers }}>
+      {children}
+    </SocketContext.Provider>
   );
 };
 

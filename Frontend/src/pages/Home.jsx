@@ -9,7 +9,7 @@ import SearchBar from "../components/SearchBar";
 import { setCurrentRecipient } from "../store/asyncCalls";
 
 function Home() {
-  const socket = useSocket();
+  const { onlineUsers } = useSocket();
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -17,7 +17,9 @@ function Home() {
     (state) => state.users
   );
   const [chatScreen, setChatScreen] = useState(false);
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log(onlineUsers);
+  }, [onlineUsers]);
 
   const changeScreen = (value) => {
     console.log(value);

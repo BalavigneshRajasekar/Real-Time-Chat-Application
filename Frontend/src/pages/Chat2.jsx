@@ -9,10 +9,10 @@ import { Avatar } from "antd";
 import useAuth from "../hooks/useAuth";
 import MessageInput from "../components/MessageInput";
 import { useDispatch, useSelector } from "react-redux";
-import { setMessages } from "../store/asyncCalls";
+import { setMessages, resetMessages } from "../store/asyncCalls";
 
 function Chat2({ changeScreen }) {
-  const socket = useSocket();
+  const { socket } = useSocket();
   const { user } = useAuth();
   const [typing, setTyping] = useState(false);
 
@@ -23,13 +23,13 @@ function Chat2({ changeScreen }) {
   const userId = user._id;
 
   useEffect(() => {
+    //TODO get Messages from Db
+
     socket.on("receive", (messages) => {
       dispatch(setMessages(messages));
     });
 
     socket.on("typing", (value) => {
-      console.log(value);
-
       setTyping(value);
     });
 
@@ -42,9 +42,11 @@ function Chat2({ changeScreen }) {
     // });
 
     return () => {
-      dispatch(setMessages([])); // remove previous messages when unmount
+      // remove previous messages when move to another receiver chat
+      dispatch(resetMessages());
+      socket.off("receive");
     };
-  }, [user._id, socket]);
+  }, [user._id, socket, currentRecipient]);
 
   return (
     <div className="h-screen  ">
@@ -74,18 +76,16 @@ function Chat2({ changeScreen }) {
       </div>
 
       {/* Message section */}
-      <div className="flex-1 overflow-y-auto h-[calc(100vh-220px)] border border-indigo-200 ">
+      <div className="flex-1 overflow-y-auto h-[calc(100vh-220px)] border border-indigo-200  ">
         {messages.map((msg, i) => (
           <div
             key={i}
             className={`content ${
-              msg.senderID === userId ? "user" : "sender"
+              msg.senderID == userId ? "user" : "sender"
             } p-5`}
           >
             <span
-              className={` ${
-                msg.senderID === userId ? "userClr" : "senderClr"
-              }`}
+              className={` ${msg.senderID == userId ? "userClr" : "senderClr"}`}
             >
               {msg.senderID !== userId && (
                 <Avatar
@@ -99,6 +99,9 @@ function Chat2({ changeScreen }) {
                 ></Avatar>
               )}
               {msg.chat}
+              <span className="text-gray-500 text-xs float-right">
+                10:00 AM
+              </span>
             </span>
           </div>
         ))}

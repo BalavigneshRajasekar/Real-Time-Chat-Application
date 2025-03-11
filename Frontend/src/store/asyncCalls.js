@@ -31,7 +31,12 @@ const asyncCalls = createSlice({
       state.currentRecipient = action.payload;
     },
     setMessages: (state, action) => {
+      console.log(action.payload);
+
       state.messages = [...state.messages, action.payload];
+    },
+    resetMessages: (state, action) => {
+      state.messages = [];
     },
   },
   extraReducers: (builder) => {
@@ -49,5 +54,6 @@ const asyncCalls = createSlice({
       });
   },
 });
-export const { setCurrentRecipient, setMessages } = asyncCalls.actions;
+export const { setCurrentRecipient, setMessages, resetMessages } =
+  asyncCalls.actions;
 export default asyncCalls.reducer;

@@ -11,22 +11,25 @@ function MessageInput() {
   const [text, setText] = useState();
   const { currentRecipient } = useSelector((state) => state.users);
   const dispatch = useDispatch();
-  const socket = useSocket();
+  const { socket } = useSocket();
   const { user } = useAuth();
 
   const userId = user._id;
   const receiver = currentRecipient._id;
 
   const sendMessage = () => {
+    console.log(text);
+
     const newMessage = {
-      senderId: user._id,
-      receiverID: receiver,
+      senderID: user._id,
+      receiverID: currentRecipient._id,
       chat: text,
     };
-    dispatch(setMessages(newMessage));
-    setText("");
+    console.log(text);
 
+    dispatch(setMessages(newMessage));
     socket.emit("sendMessage", { userId, receiver, text });
+    setText("");
   };
 
   const handleFocus = () => {
