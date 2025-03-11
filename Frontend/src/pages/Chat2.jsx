@@ -14,6 +14,7 @@ import { setMessages, resetMessages } from "../store/asyncCalls";
 function Chat2({ changeScreen }) {
   const { socket } = useSocket();
   const { user } = useAuth();
+  const { onlineUsers } = useSocket();
   const [typing, setTyping] = useState(false);
 
   const { currentRecipient, messages } = useSelector((state) => state.users);
@@ -71,7 +72,17 @@ function Chat2({ changeScreen }) {
         </div>
         <div>
           <h2>{currentRecipient.username}</h2>
-          {/* <p>{online ? "Online" : "Offline"}</p> */}
+          {onlineUsers?.includes(currentRecipient._id) ? (
+            <>
+              <span className="rounded-4xl w-3 h-3 bg-green-600 inline-block"></span>
+              <p className="inline-block ml-2">online</p>
+            </>
+          ) : (
+            <>
+              <span className="rounded-4xl w-3 h-3 bg-gray-600 inline-block"></span>
+              <p className="inline-block ml-2">offline</p>
+            </>
+          )}
         </div>
       </div>
 
