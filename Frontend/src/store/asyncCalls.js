@@ -5,7 +5,7 @@ import axiosInstance from "../utilities/axiosConfig";
 //Get Receiver details when app loads to show user to message
 export const getUserData = createAsyncThunk(
   "get/ReceiverData",
-  async (Id, thunkAPI) => {
+  async (thunkAPI) => {
     try {
       const response = await axiosInstance("/app/get/allUsers");
       console.log(response);
@@ -20,11 +20,20 @@ export const getUserData = createAsyncThunk(
 const asyncCalls = createSlice({
   name: "asyncCalls",
   initialState: {
-    receiverData: [],
+    receiverData: [], // All users except self
+    currentRecipient: null, // current message recipient
+    messages: [], // all messages between current sender and current receiver
     error: null,
     loading: false,
   },
-  reducers: {},
+  reducers: {
+    setCurrentRecipient: (state, action) => {
+      state.currentRecipient = action.payload;
+    },
+    setMessages: (state, action) => {
+      state.messages = [...state.messages, action.payload];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getUserData.pending, (state) => {
@@ -40,5 +49,5 @@ const asyncCalls = createSlice({
       });
   },
 });
-
+export const { setCurrentRecipient, setMessages } = asyncCalls.actions;
 export default asyncCalls.reducer;

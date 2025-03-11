@@ -2,9 +2,11 @@
 /* eslint-disable no-unused-vars */
 import { createContext, useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import useAuth from "../hooks/useAuth";
 export const SocketContext = createContext();
 
 const SocketProvider = ({ children }) => {
+  const { user } = useAuth();
   const [socket, SetSocket] = useState(null);
 
   useEffect(() => {
@@ -13,12 +15,15 @@ const SocketProvider = ({ children }) => {
     socket.on("connect", () => {
       console.log("User connected" + socket.id);
     });
-
+    //Join socket when User Login
+    if (user) {
+      socket.emit("join", user._id);
+    }
     //Disconnect socket connection when component unmounts
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [user]);
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );

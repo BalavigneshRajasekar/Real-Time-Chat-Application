@@ -11,8 +11,8 @@ function UserNameCard({ value, changeScreen }) {
     >
       <div className="mt-4">
         <Avatar
-          style={{ width: "70px", height: "70px" }}
-          src={value.profilePic}
+          style={{ width: "40px", height: "40px" }}
+          src={value.profilePic ? value.profilePic : "user.png"}
           alt="User Pic"
         />
       </div>

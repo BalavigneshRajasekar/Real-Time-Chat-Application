@@ -3,21 +3,25 @@ import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import UserNameCard from "../components/UserNameCard";
 import { useSocket } from "../hooks/useSocket";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Chat2 from "./Chat2";
 import SearchBar from "../components/SearchBar";
+import { setCurrentRecipient } from "../store/asyncCalls";
 
 function Home() {
   const socket = useSocket();
   const navigate = useNavigate();
-  const [receiverData, setReceiverData] = useState(null);
-  const receivers = useSelector((state) => state.users.receiverData);
+
+  const dispatch = useDispatch();
+  const { receiverData, currentRecipient } = useSelector(
+    (state) => state.users
+  );
   const [chatScreen, setChatScreen] = useState(false);
   useEffect(() => {}, []);
 
   const changeScreen = (value) => {
     console.log(value);
-    setReceiverData(value);
+    dispatch(setCurrentRecipient(value));
 
     if (window.innerWidth < 700) {
       setChatScreen((value) => !value);
@@ -37,8 +41,8 @@ function Home() {
           {/* Search bar for search user */}
           <SearchBar />
           {/* List of user name cards */}
-          {receivers &&
-            receivers.map((value, i) => {
+          {receiverData &&
+            receiverData.map((value, i) => {
               return (
                 <UserNameCard
                   value={value}
@@ -55,8 +59,8 @@ function Home() {
           }
         >
           {/* Render chat component */}
-          {receiverData ? (
-            <Chat2 receiverData={receiverData} changeScreen={changeScreen} />
+          {currentRecipient ? (
+            <Chat2 changeScreen={changeScreen} />
           ) : (
             <p className="text-center  mt-50 ">Start the Conversation</p>
           )}
