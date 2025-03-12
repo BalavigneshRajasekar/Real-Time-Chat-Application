@@ -7,9 +7,14 @@ import Lottie from "lottie-react";
 import { toast } from "react-toastify";
 import appStore from "../animations/appstore.json";
 import playStore from "../animations/playStore.json";
+import { MdEmail } from "react-icons/md";
+import { FaRegEyeSlash, FaUser } from "react-icons/fa";
+import { FaRegEye } from "react-icons/fa";
+import { RiLockPasswordFill } from "react-icons/ri";
 
 function Signup() {
   const { registerUser, isSigning } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
@@ -76,13 +81,16 @@ function Signup() {
         <div className="flex justify-center p-10">
           <img src="./chat.png" className="w-20 "></img>
         </div>
-        <h5 className="text-2xl text-center bg-gradient-to-l from-amber-300 to-amber-900   bg-clip-text text-transparent ">
-          Become a Part of the Chat Community
+        <h5 className="font-bold text-2xl lg:text-4xl  text-center bg-gradient-to-l from-amber-300 to-amber-900   bg-clip-text text-transparent ">
+          Become a Part of the ChatHub Community
         </h5>
-        <h1 className="text-white text-center mt-2">Register</h1>
+
         {/* Signup form */}
-        <form onSubmit={handleSubmit}>
-          <label className="block text-white">UserName :</label>
+        <form onSubmit={handleSubmit} className="mt-10">
+          <label className="block text-white">
+            <FaUser className="inline-block mr-2 text-xl" />
+            UserName
+          </label>
           <input
             autoFocus
             value={formData.username}
@@ -93,7 +101,10 @@ function Signup() {
             placeholder="John"
           />
           {errors.username && <p className="text-red-800">{errors.username}</p>}
-          <label className="block text-white mt-3">email :</label>
+          <label className="block text-white mt-3">
+            <MdEmail className="inline-block mr-2 text-xl" />
+            email
+          </label>
           <input
             value={formData.email}
             onChange={handleChange}
@@ -103,18 +114,33 @@ function Signup() {
             placeholder="john@gmail.com"
           />
           {errors.email && <p className="text-red-800">{errors.email}</p>}
-          <label className="block mt-3 text-white">Password :</label>
-          <input
-            value={formData.password}
-            onChange={handleChange}
-            className="mt-3 p-4 w-full border-2 rounded-md h-14 text-white placeholder:text-gray-400 border-gray-300 focus:outline-none focus:border-amber-600"
-            type="password"
-            name="password"
-            placeholder="#1234John-"
-          />
+          <label className="block mt-3 text-white">
+            <RiLockPasswordFill className="inline-block text-xl" /> Password
+          </label>
+          <div className="relative">
+            <input
+              value={formData.password}
+              onChange={handleChange}
+              className="mt-3 p-4 w-full border-2 rounded-md h-14 text-white placeholder:text-gray-400 border-gray-300 focus:outline-none focus:border-amber-600"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="#1234John-"
+            />
+            {showPassword ? (
+              <FaRegEye
+                className="absolute  right-5 top-8 cursor-pointer text-white text-xl"
+                onClick={() => setShowPassword(false)}
+              />
+            ) : (
+              <FaRegEyeSlash
+                className="absolute right-5 top-8 cursor-pointer text-white text-xl"
+                onClick={() => setShowPassword(true)}
+              />
+            )}
+          </div>
           {errors.password && <p className="text-red-800">{errors.password}</p>}
           <button
-            className="w-full h-14 p-2 mt-3 rounded-md bg-blue-500 text-white hover:bg-blue-600"
+            className="w-full h-14 p-2 mt-3 rounded-md bg-gradient-to-l from-orange-300 to-orange-900 text-white hover:bg-gradient-to-r from-orange-300 to-orange-900 "
             disabled={isSigning}
           >
             {isSigning ? "Registering..." : "Register"}

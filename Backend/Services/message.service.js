@@ -1,12 +1,8 @@
 const Message = require("../models/message.modal");
 
 class MessageService {
-  async createMessage(senderID, receiverID, chat) {
-    const newMessage = await Message.create({
-      senderID,
-      receiverID,
-      chat,
-    });
+  async createMessage(dataObj) {
+    const newMessage = await Message.create(dataObj);
     newMessage.save();
     return newMessage;
   }

@@ -6,9 +6,14 @@ import Lottie from "lottie-react";
 import chatAnime from "../animations/chat.json";
 import { motion } from "motion/react";
 import useAuth from "../hooks/useAuth";
+import { MdEmail } from "react-icons/md";
+import { FaRegEyeSlash } from "react-icons/fa";
+import { FaRegEye } from "react-icons/fa";
+import { RiLockPasswordFill } from "react-icons/ri";
 import { toast } from "react-toastify";
 function Login() {
   const { isLogging, loginUser, googleLogin } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -82,7 +87,10 @@ function Login() {
         {/* Login form */}
 
         <form onSubmit={handleSubmit} className="">
-          <label className="block text-white">Email :</label>
+          <label className="block text-white">
+            <MdEmail className="inline-block mr-2 text-xl" />
+            Email
+          </label>
           <input
             autoFocus
             value={formData.email}
@@ -93,19 +101,34 @@ function Login() {
             placeholder="John@gmail.com"
           />
           {errors.email && <p className="text-red-800">{errors.email}</p>}
-          <label className="block mt-3 text-white">Password :</label>
-          <input
-            value={formData.password}
-            onChange={handleChange}
-            className="mt-3 p-4 w-full border-2 rounded-md h-14 text-white placeholder:text-gray-400 border-gray-300 focus:outline-none focus:border-amber-600"
-            type="password"
-            name="password"
-            placeholder="#123SDsc-"
-          />
+          <label className="block mt-3 text-white">
+            <RiLockPasswordFill className="inline-block  text-xl" /> Password
+          </label>
+          <div className="relative">
+            <input
+              value={formData.password}
+              onChange={handleChange}
+              className="mt-3 p-4 w-full border-2 rounded-md h-14 text-white placeholder:text-gray-400 border-gray-300 focus:outline-none focus:border-amber-600"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="#123SDsc-"
+            />
+            {showPassword ? (
+              <FaRegEye
+                className="absolute  right-5 top-8 cursor-pointer text-white text-xl"
+                onClick={() => setShowPassword(false)}
+              />
+            ) : (
+              <FaRegEyeSlash
+                className="absolute right-5 top-8 cursor-pointer text-white text-xl"
+                onClick={() => setShowPassword(true)}
+              />
+            )}
+          </div>
           {errors.password && <p className="text-red-800">{errors.password}</p>}
           <button
             disabled={isLogging}
-            className="w-full h-14 p-2 mt-3 rounded-md bg-blue-500 text-white hover:bg-blue-600 active:scale-90 duration-100 ease-in-out"
+            className="w-full h-14 p-2 mt-3 rounded-md bg-gradient-to-l   from-orange-300 to-orange-900 text-white hover:bg-gradient-to-r from-orange-300 to-orange-900 active:scale-90 duration-100 ease-in-out"
           >
             {isLogging ? "Logging IN..." : "Login"}
           </button>
@@ -120,7 +143,7 @@ function Login() {
           </button>
 
           <p className="mt-4 text-center text-gray-400">
-            Forgot Password? <a href="/forgot-password">Reset Password</a>
+            Forgot Password? <Link to="/forgotPassword">Reset Password</Link>
           </p>
           <p className="mt-4 text-center text-gray-400">
             Don&rsquo;t have an account? <Link to="/signup">Register</Link>

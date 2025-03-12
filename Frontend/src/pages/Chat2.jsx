@@ -10,6 +10,7 @@ import useAuth from "../hooks/useAuth";
 import MessageInput from "../components/MessageInput";
 import { useDispatch, useSelector } from "react-redux";
 import { setMessages, resetMessages } from "../store/asyncCalls";
+import ChatScreenHeader from "../components/ChatScreenHeader";
 
 function Chat2({ changeScreen }) {
   const { socket } = useSocket();
@@ -34,14 +35,6 @@ function Chat2({ changeScreen }) {
       setTyping(value);
     });
 
-    // This going to check whether user online or not
-    // socket.emit("verifyUser", receiver);
-    // //Now we get the current status of user
-    // socket.on("userOnline", (status) => {
-    //   console.log(status);
-    //   setOnline(status);
-    // });
-
     return () => {
       // remove previous messages when move to another receiver chat
       dispatch(resetMessages());
@@ -52,39 +45,7 @@ function Chat2({ changeScreen }) {
   return (
     <div className="h-screen  ">
       {/* Chat screen headers */}
-      <div className="bg-gray-300 flex gap-3 p-2 rounded-t-md">
-        <div>
-          <IoMdArrowBack
-            size={"30px"}
-            className="cursor-pointer hover:text-gray-700 inline-block"
-            onClick={() => changeScreen(currentRecipient)}
-          />
-          <Avatar
-            size={"large"}
-            src={
-              currentRecipient.profilePic ? (
-                currentRecipient.profilePic
-              ) : (
-                <RxAvatar className="inline-block text-gray-800 text-4xl" />
-              )
-            }
-          ></Avatar>
-        </div>
-        <div>
-          <h2>{currentRecipient.username}</h2>
-          {onlineUsers?.includes(currentRecipient._id) ? (
-            <>
-              <span className="rounded-4xl w-3 h-3 bg-green-600 inline-block"></span>
-              <p className="inline-block ml-2">online</p>
-            </>
-          ) : (
-            <>
-              <span className="rounded-4xl w-3 h-3 bg-gray-600 inline-block"></span>
-              <p className="inline-block ml-2">offline</p>
-            </>
-          )}
-        </div>
-      </div>
+      <ChatScreenHeader changeScreen={changeScreen} />
 
       {/* Message section */}
       <div className="flex-1 overflow-y-auto h-[calc(100vh-220px)] border border-indigo-200  ">

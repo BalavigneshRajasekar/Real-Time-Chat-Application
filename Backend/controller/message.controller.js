@@ -13,7 +13,12 @@ class MessageController {
           .status(400)
           .json({ message: "receiverId and chat are required" });
       }
-      await messageService.createMessage(senderId, receiverId, chat);
+      let newChat = {
+        sender: senderId,
+        receiver: receiverId,
+        chat: chat,
+      };
+      await messageService.createMessage(newChat);
       res.status(201).json({ message: "message added" });
     } catch (e) {
       console.log(e);

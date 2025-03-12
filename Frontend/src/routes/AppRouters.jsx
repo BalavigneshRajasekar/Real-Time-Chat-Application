@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "../pages/Home";
 import MainLayout from "../layouts/MainLayout";
@@ -8,9 +8,14 @@ import useAuth from "../hooks/useAuth";
 import Chat2 from "../pages/Chat2";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
+import ForgotPassword from "../pages/ForgotPassword";
 
 function AppRouters() {
   const { user } = useAuth();
+
+  useEffect(() => {
+    console.log(user);
+  });
 
   return (
     <div>
@@ -38,6 +43,10 @@ function AppRouters() {
           <Route
             path="/signup"
             element={!user ? <Signup /> : <Navigate to="/" />}
+          ></Route>
+          <Route
+            path="/forgotPassword"
+            element={!user ? <ForgotPassword /> : <Navigate to="/" />}
           ></Route>
         </Routes>
       </BrowserRouter>

@@ -2,7 +2,11 @@
 import React from "react";
 
 function ForgotPassword() {
-  return <div></div>;
+  return (
+    <div>
+      <h1>Forgot pass</h1>
+    </div>
+  );
 }
 
 export default ForgotPassword;
