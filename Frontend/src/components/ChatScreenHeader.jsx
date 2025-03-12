@@ -5,8 +5,9 @@ import React from "react";
 import { IoMdArrowBack } from "react-icons/io";
 import { RxAvatar } from "react-icons/rx";
 import { useSelector } from "react-redux";
-
+import { IoIosCall } from "react-icons/io";
 import { useSocket } from "../hooks/useSocket";
+import { FaVideo } from "react-icons/fa6";
 
 function ChatScreenHeader({ changeScreen }) {
   const { onlineUsers } = useSocket();
@@ -14,7 +15,7 @@ function ChatScreenHeader({ changeScreen }) {
 
   return (
     <>
-      <div className="bg-gray-300 flex gap-3 p-2 rounded-t-md">
+      <div className="bg-gray-300 flex gap-3 p-2 rounded-t-md relative">
         <div>
           <IoMdArrowBack
             size={"30px"}
@@ -45,6 +46,11 @@ function ChatScreenHeader({ changeScreen }) {
               <p className="inline-block ml-2">offline</p>
             </>
           )}
+        </div>
+        {/* Headers Action */}
+        <div className="absolute right-10 top-8 md:top-5">
+          <IoIosCall className="inline-block text-3xl" />
+          <FaVideo className="inline-block text-3xl ml-5" />
         </div>
       </div>
     </>

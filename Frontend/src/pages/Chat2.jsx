@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useSocket } from "../hooks/useSocket";
 import { RxAvatar } from "react-icons/rx";
 import { IoMdArrowBack } from "react-icons/io";
-import { Avatar } from "antd";
+import { Avatar, Image } from "antd";
 import useAuth from "../hooks/useAuth";
 import MessageInput from "../components/MessageInput";
 import { useDispatch, useSelector } from "react-redux";
@@ -56,27 +56,35 @@ function Chat2({ changeScreen }) {
               msg.senderID == userId ? "user" : "sender"
             } p-5`}
           >
-            <span
-              className={` ${msg.senderID == userId ? "userClr" : "senderClr"}`}
+            {msg.senderID !== userId && (
+              <Avatar
+                src={
+                  currentRecipient.profilePic ? (
+                    currentRecipient.profilePic
+                  ) : (
+                    <RxAvatar className="inline-block text-gray-500 text-2xl" />
+                  )
+                }
+              ></Avatar>
+            )}
+            <div
+              className={`flex flex-col ml-2 gap-1 shadow-2xs ${
+                msg.senderID == userId ? "userClr" : "senderClr"
+              }`}
             >
-              {msg.senderID !== userId && (
-                <Avatar
-                  src={
-                    currentRecipient.profilePic ? (
-                      currentRecipient.profilePic
-                    ) : (
-                      <RxAvatar className="inline-block text-gray-500 text-2xl" />
-                    )
-                  }
-                ></Avatar>
-              )}
-              {msg.chat}
+              {msg.chat && <span className="">{msg.chat}</span>}
 
-              <span className="text-gray-500 text-xs float-right">
-                10:00 AM
-              </span>
-              {msg.image && <img src={msg.image} className="w-60"></img>}
-            </span>
+              {msg.image && (
+                <Image
+                  src={msg.image}
+                  width={"300px"}
+                  height={"300px"}
+                  className="rounded-md"
+                ></Image>
+              )}
+
+              <span className="text-gray-500 text-xs ">10:00 AM</span>
+            </div>
           </div>
         ))}
       </div>
