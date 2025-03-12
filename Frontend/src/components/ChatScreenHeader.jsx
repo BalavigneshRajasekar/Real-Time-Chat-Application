@@ -5,11 +5,13 @@ import React from "react";
 import { IoMdArrowBack } from "react-icons/io";
 import { RxAvatar } from "react-icons/rx";
 import { useSelector } from "react-redux";
-import useAuth from "../hooks/useAuth";
+
+import { useSocket } from "../hooks/useSocket";
 
 function ChatScreenHeader({ changeScreen }) {
-  const { onlineUsers } = useAuth();
+  const { onlineUsers } = useSocket();
   const { currentRecipient } = useSelector((store) => store.users);
+
   return (
     <>
       <div className="bg-gray-300 flex gap-3 p-2 rounded-t-md">

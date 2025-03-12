@@ -48,7 +48,7 @@ function Chat2({ changeScreen }) {
       <ChatScreenHeader changeScreen={changeScreen} />
 
       {/* Message section */}
-      <div className="flex-1 overflow-y-auto h-[calc(100vh-220px)] border border-indigo-200  ">
+      <div className="flex-1 overflow-y-auto h-[calc(100vh-220px)] border border-indigo-200 border-b-0  ">
         {messages.map((msg, i) => (
           <div
             key={i}
@@ -71,9 +71,11 @@ function Chat2({ changeScreen }) {
                 ></Avatar>
               )}
               {msg.chat}
+
               <span className="text-gray-500 text-xs float-right">
                 10:00 AM
               </span>
+              {msg.image && <img src={msg.image} className="w-60"></img>}
             </span>
           </div>
         ))}

@@ -15,9 +15,13 @@ const mainSocket = (io) => {
       io.emit("onlineUsers", Array.from(manageUser.keys()));
     });
 
-    socket.on("sendMessage", ({ userId, receiver, text }) => {
-      const messages = { senderID: userId, receiverID: receiver, chat: text };
-      console.log(messages);
+    socket.on("sendMessage", ({ userId, receiver, text, img }) => {
+      const messages = {
+        senderID: userId,
+        receiverID: receiver,
+        chat: text,
+        image: img,
+      };
       const receiverSocketId = manageUser.get(receiver); // this has socket Id align with receiver ID
       const userSocketId = manageUser.get(userId); // this has socket Id align with user ID
       //If user has multiple open devices we need to send users own msg to him multiple open devices
