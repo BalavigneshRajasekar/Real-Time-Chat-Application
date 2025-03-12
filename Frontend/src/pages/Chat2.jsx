@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useRef } from "react";
 import { useEffect, useState } from "react";
 import { useSocket } from "../hooks/useSocket";
 import { RxAvatar } from "react-icons/rx";
@@ -15,6 +15,7 @@ import ChatScreenHeader from "../components/ChatScreenHeader";
 function Chat2({ changeScreen }) {
   const { socket } = useSocket();
   const { user } = useAuth();
+  const lastMessageRef = useRef();
   const { onlineUsers } = useSocket();
   const [typing, setTyping] = useState(false);
 
@@ -41,6 +42,12 @@ function Chat2({ changeScreen }) {
       socket.off("receive");
     };
   }, [user._id, socket, currentRecipient]);
+
+  // UseEffect tract the the last chat to scroll
+  useEffect(() => {
+    // Scroll to bottom when new message arrives
+    lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
     <div className="h-screen  ">
@@ -87,6 +94,8 @@ function Chat2({ changeScreen }) {
             </div>
           </div>
         ))}
+        {/* Add scroll to bottom so dummy div to track */}
+        <div ref={lastMessageRef}></div>
       </div>
       {/* Message input section */}
       <MessageInput />
