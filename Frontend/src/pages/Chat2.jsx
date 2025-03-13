@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useSocket } from "../hooks/useSocket";
 import { RxAvatar } from "react-icons/rx";
 import { IoMdArrowBack } from "react-icons/io";
-import { Avatar, Image } from "antd";
+import { Avatar, Image, message } from "antd";
 import useAuth from "../hooks/useAuth";
 import MessageInput from "../components/MessageInput";
 import { useDispatch, useSelector } from "react-redux";
@@ -56,44 +56,63 @@ function Chat2({ changeScreen }) {
 
       {/* Message section */}
       <div className="flex-1 overflow-y-auto h-[calc(100vh-220px)] border border-indigo-200 border-b-0  ">
-        {messages.map((msg, i) => (
-          <div
-            key={i}
-            className={`content ${
-              msg.senderID == userId ? "user" : "sender"
-            } p-5`}
-          >
-            {msg.senderID !== userId && (
-              <Avatar
-                src={
-                  currentRecipient.profilePic ? (
-                    currentRecipient.profilePic
-                  ) : (
-                    <RxAvatar className="inline-block text-gray-500 text-2xl" />
-                  )
-                }
-              ></Avatar>
-            )}
-            <div
-              className={`flex flex-col ml-2 gap-1 shadow-2xs ${
-                msg.senderID == userId ? "userClr" : "senderClr"
-              }`}
-            >
-              {msg.chat && <span className="">{msg.chat}</span>}
+        {messages.map((msg, i) => {
+          let currentMsgDate = new Date(msg.createdAt).toDateString();
+          let previousMsgDate = new Date(
+            messages[i - 1]?.createdAt
+          ).toDateString();
 
-              {msg.image && (
-                <Image
-                  src={msg.image}
-                  width={"300px"}
-                  height={"300px"}
-                  className="rounded-md"
-                ></Image>
+          return (
+            <div key={i}>
+              {(i == 0 || currentMsgDate !== previousMsgDate) && (
+                <div className="text-center">
+                  <span className="bg-gray-400 px-1 rounded-4xl">
+                    {new Date(msg.createdAt).toDateString()}
+                  </span>
+                </div>
               )}
+              <div
+                key={i}
+                className={`content ${
+                  msg.senderID == userId ? "user" : "sender"
+                } p-5`}
+              >
+                {msg.senderID !== userId && (
+                  <Avatar
+                    src={
+                      currentRecipient.profilePic ? (
+                        currentRecipient.profilePic
+                      ) : (
+                        <RxAvatar className="inline-block text-gray-500 text-2xl" />
+                      )
+                    }
+                  ></Avatar>
+                )}
+                <div
+                  className={`flex flex-col ml-2 gap-1 shadow-2xs ${
+                    msg.senderID == userId ? "userClr" : "senderClr"
+                  }`}
+                >
+                  {msg.chat && <span className="">{msg.chat}</span>}
 
-              <span className="text-gray-500 text-xs ">10:00 AM</span>
+                  {msg.image && (
+                    <Image
+                      src={msg.image}
+                      width={"300px"}
+                      height={"300px"}
+                      className="rounded-md"
+                    ></Image>
+                  )}
+
+                  <span className="text-gray-500 text-xs ">
+                    {new Date(msg.createdAt).toLocaleTimeString()}
+                  </span>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
+
         {/* Add scroll to bottom so dummy div to track */}
         <div ref={lastMessageRef}></div>
       </div>

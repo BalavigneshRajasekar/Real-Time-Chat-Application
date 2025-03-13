@@ -15,12 +15,13 @@ const mainSocket = (io) => {
       io.emit("onlineUsers", Array.from(manageUser.keys()));
     });
 
-    socket.on("sendMessage", ({ userId, receiver, text, img }) => {
+    socket.on("sendMessage", ({ userId, receiver, text, img, createdAt }) => {
       const messages = {
         senderID: userId,
         receiverID: receiver,
         chat: text,
         image: img,
+        createdAt: createdAt,
       };
       const receiverSocketId = manageUser.get(receiver); // this has socket Id align with receiver ID
       const userSocketId = manageUser.get(userId); // this has socket Id align with user ID

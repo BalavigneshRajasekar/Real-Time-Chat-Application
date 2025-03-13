@@ -26,10 +26,17 @@ function MessageInput() {
       receiverID: currentRecipient._id,
       chat: text,
       image: img,
+      createdAt: Date.now(),
     };
 
     dispatch(setMessages(newMessage));
-    socket.emit("sendMessage", { userId, receiver, text, img });
+    socket.emit("sendMessage", {
+      userId,
+      receiver,
+      text,
+      img,
+      createdAt: Date.now(),
+    });
     setText("");
     setImg(null);
   };
