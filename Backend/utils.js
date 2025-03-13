@@ -64,6 +64,7 @@ class Utilities {
     return transporter.sendMail(mailOptions);
   }
 
+  //Upload a file to the cloudinary
   static async uploadImage(req) {
     const url = await new Promise((resolve, reject) => {
       const result = cloudinary.uploader.upload_stream(
@@ -78,6 +79,22 @@ class Utilities {
       result.end(req.file.buffer);
     });
     return url.secure_url;
+  }
+
+  //Upload a Base64 url to cloudinary
+  static async uploadBase64(imgUrl) {
+    try {
+      if (imgUrl?.startsWith("data:image")) {
+        const uploadImage = await cloudinary.uploader.upload(imgUrl, {
+          folder: "chatImages",
+        });
+        return uploadImage.secure_url;
+      }
+      return null;
+    } catch (e) {
+      console.log(e);
+      throw new Error("Error uploading image");
+    }
   }
 }
 

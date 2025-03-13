@@ -16,6 +16,21 @@ export const getUserData = createAsyncThunk(
     }
   }
 );
+//Get Messages from server at Initial load
+export const getMessages = createAsyncThunk(
+  "get/Messages",
+  async (receiverID, thunkAPI) => {
+    try {
+      const response = await axiosInstance.get(
+        `/message/get/messages/${receiverID}`
+      );
+      console.log(response);
+      return response.data.messages;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e);
+    }
+  }
+);
 
 const asyncCalls = createSlice({
   name: "asyncCalls",
@@ -25,6 +40,8 @@ const asyncCalls = createSlice({
     messages: [], // all messages between current sender and current receiver
     error: null,
     loading: false,
+    messageLoading: false,
+    messageError: null,
   },
   reducers: {
     setCurrentRecipient: (state, action) => {
@@ -51,6 +68,18 @@ const asyncCalls = createSlice({
       .addCase(getUserData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      // Get messages from Thunk and validate them
+      .addCase(getMessages.pending, (state) => {
+        state.messageLoading = true;
+      })
+      .addCase(getMessages.fulfilled, (state, action) => {
+        state.messageLoading = false;
+        state.messages = action.payload;
+      })
+      .addCase(getMessages.rejected, (state, action) => {
+        state.messageLoading = false;
+        state.messageError = action.error.message;
       });
   },
 });

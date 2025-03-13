@@ -1,3 +1,6 @@
+const messageService = require("./Services/message.service");
+const Utilities = require("./utils");
+
 const mainSocket = (io) => {
   const manageUser = new Map();
 
@@ -15,50 +18,55 @@ const mainSocket = (io) => {
       io.emit("onlineUsers", Array.from(manageUser.keys()));
     });
 
-    socket.on("sendMessage", ({ userId, receiver, text, img, createdAt }) => {
-      const messages = {
-        senderID: userId,
-        receiverID: receiver,
-        chat: text,
-        image: img,
-        createdAt: createdAt,
-      };
-      const receiverSocketId = manageUser.get(receiver); // this has socket Id align with receiver ID
-      const userSocketId = manageUser.get(userId); // this has socket Id align with user ID
-      //If user has multiple open devices we need to send users own msg to him multiple open devices
-      userSocketId.forEach((socketId) => {
-        if (socket.id !== socketId) {
-          io.to(socketId).emit("receive", messages);
-        }
-      });
-
-      // First verify user is joined the chat if not there is no socket ID for the user
-      // if not we need to save the msg as not delivered
-      if (receiverSocketId) {
-        // If receiver has multiple open devices we need to send all open devices
-        receiverSocketId.forEach((socketId) => {
-          io.to(socketId).emit("receive", messages);
+    socket.on(
+      "sendMessage",
+      async ({ userId, receiver, text, img, createdAt }) => {
+        let imgUrl = img;
+        const messages = {
+          senderID: userId,
+          receiverID: receiver,
+          chat: text,
+          image: imgUrl,
+          createdAt: createdAt,
+        };
+        const receiverSocketId = manageUser.get(receiver); // this has socket Id align with receiver ID
+        const userSocketId = manageUser.get(userId); // this has socket Id align with user ID
+        //If user has multiple open devices we need to send users own msg to him multiple open devices
+        userSocketId?.forEach((socketId) => {
+          if (socket.id !== socketId) {
+            io.to(socketId).emit("receive", messages);
+          }
         });
-      }
-    });
 
-    // Verify user online status
-    socket.on("verifyUser", (receiver) => {
-      if (manageUser.has(receiver)) {
-        console.log("online");
-        console.log(socket.id);
-        io.to(socket.id).emit("userOnline", true);
-      } else {
-        io.to(socket.id).emit("userOnline", false);
-      }
-    });
+        // First verify user is joined the chat if not there is no socket ID for the user
+        // if not we need to save the msg as not delivered
+        if (receiverSocketId) {
+          // If receiver has multiple open devices we need to send all open devices
+          receiverSocketId.forEach((socketId) => {
+            io.to(socketId).emit("receive", messages);
+          });
+        }
 
-    socket.on("listenTyping", (receiverID) => {
+        // Upload Image to cloudinary
+        imgUrl = await Utilities.uploadBase64(img);
+        messages.image = imgUrl;
+
+        //Save Messages to DB
+        try {
+          await messageService.createMessage(messages);
+        } catch (e) {
+          console.log("Error while saving message", e);
+        }
+      }
+    );
+
+    // Listen for typing event from client
+    socket.on("listenTyping", (receiverID, userId) => {
       console.log(receiverID);
 
       if (manageUser.has(receiverID)) {
         manageUser.get(receiverID).forEach((receiverSocket) => {
-          io.to(receiverSocket).emit("typing", true);
+          io.to(receiverSocket).emit("typing", userId);
         });
       }
     });
@@ -66,7 +74,7 @@ const mainSocket = (io) => {
     socket.on("stopTyping", (receiverID) => {
       if (manageUser.has(receiverID)) {
         manageUser.get(receiverID).forEach((receiverSocket) => {
-          io.to(receiverSocket).emit("typing", false);
+          io.to(receiverSocket).emit("typing", null);
         });
       }
     });

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import { Avatar } from "antd";
+import { Avatar, Image } from "antd";
 import React from "react";
 import { IoMdArrowBack } from "react-icons/io";
 import { RxAvatar } from "react-icons/rx";
@@ -22,16 +22,22 @@ function ChatScreenHeader({ changeScreen }) {
             className="cursor-pointer hover:text-gray-700 inline-block"
             onClick={() => changeScreen(currentRecipient)}
           />
-          <Avatar
+          <Image
+            preview
+            style={{
+              width: "50px",
+              height: "50px",
+              border: "1px solid black",
+              display: "inline-block",
+              borderRadius: "50%",
+            }}
             size={"large"}
             src={
-              currentRecipient.profilePic ? (
-                currentRecipient.profilePic
-              ) : (
-                <RxAvatar className="inline-block text-gray-800 text-4xl" />
-              )
+              currentRecipient.profilePic
+                ? currentRecipient.profilePic
+                : "./user.png"
             }
-          ></Avatar>
+          ></Image>
         </div>
         <div>
           <h2>{currentRecipient.username}</h2>

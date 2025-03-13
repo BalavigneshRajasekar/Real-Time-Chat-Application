@@ -42,7 +42,7 @@ function MessageInput() {
   };
 
   const handleFocus = () => {
-    socket.emit("listenTyping");
+    socket.emit("listenTyping", receiver, userId);
   };
   const handleBlur = () => {
     socket.emit("stopTyping", receiver);

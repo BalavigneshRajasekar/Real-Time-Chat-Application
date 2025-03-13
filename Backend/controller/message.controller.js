@@ -30,12 +30,17 @@ class MessageController {
 
   async getMessages(req, res) {
     const { receiverId } = req.params;
-    const senderId = req.user.id;
+    const senderId = req.user._id;
     try {
       if (!receiverId) {
         return res.status(400).json({ message: "receiverId is required" });
       }
+      console.log(receiverId);
+      console.log(senderId);
+
       const messages = await messageService.getMessages(senderId, receiverId);
+      console.log(messages);
+
       res.status(200).json({ messages: messages });
     } catch (e) {
       console.log(e);
