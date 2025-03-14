@@ -31,6 +31,19 @@ export const getMessages = createAsyncThunk(
     }
   }
 );
+//Get all messages and lastMessages and count
+export const getAllMessages = createAsyncThunk(
+  "get/allMessages",
+  async (thunkAPI) => {
+    try {
+      const response = await axiosInstance.get("/message/get/allMessages");
+      console.log(response);
+      return response.data.messages;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e);
+    }
+  }
+);
 
 const asyncCalls = createSlice({
   name: "asyncCalls",
@@ -38,6 +51,8 @@ const asyncCalls = createSlice({
     receiverData: [], // All users except self
     currentRecipient: null, // current message recipient
     messages: [], // all messages between current sender and current receiver
+    lastMessages: {},
+    allMessages: {},
     error: null,
     loading: false,
     messageLoading: false,
@@ -75,11 +90,27 @@ const asyncCalls = createSlice({
       })
       .addCase(getMessages.fulfilled, (state, action) => {
         state.messageLoading = false;
+
         state.messages = action.payload;
       })
       .addCase(getMessages.rejected, (state, action) => {
         state.messageLoading = false;
         state.messageError = action.error.message;
+      })
+      // Get all messages and lastMessages and count
+      .addCase(getAllMessages.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllMessages.fulfilled, (state, action) => {
+        state.loading = false;
+        action.payload.forEach((data) => {
+          state.allMessages[data._id] = data.messages;
+          state.lastMessages[data._id] = data.lastMessage;
+        });
+      })
+      .addCase(getAllMessages.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });

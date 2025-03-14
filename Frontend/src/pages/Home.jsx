@@ -6,7 +6,7 @@ import { useSocket } from "../hooks/useSocket";
 import { useDispatch, useSelector } from "react-redux";
 import Chat2 from "./Chat2";
 import SearchBar from "../components/SearchBar";
-import { setCurrentRecipient } from "../store/asyncCalls";
+import { getAllMessages, setCurrentRecipient } from "../store/asyncCalls";
 
 function Home() {
   const { onlineUsers } = useSocket();
@@ -18,6 +18,8 @@ function Home() {
   );
   const [chatScreen, setChatScreen] = useState(false);
   useEffect(() => {
+    dispatch(getAllMessages());
+
     console.log(onlineUsers);
   }, [onlineUsers]);
 

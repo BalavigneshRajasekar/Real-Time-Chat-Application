@@ -3,9 +3,16 @@
 import React, { useEffect } from "react";
 import { Avatar } from "antd";
 import { useSocket } from "../hooks/useSocket";
+import { useSelector } from "react-redux";
 
 function UserNameCard({ value, changeScreen }) {
   const { onlineUsers } = useSocket();
+  const { allMessages, lastMessages } = useSelector((store) => store.users);
+  let count = 0;
+  useEffect(() => {
+    console.log(value._id);
+    console.log(allMessages);
+  }, [allMessages]);
   return (
     <div
       className="flex gap-4 h-fit w-full hover:cursor-pointer hover:bg-gray-900  py-2"
@@ -30,7 +37,7 @@ function UserNameCard({ value, changeScreen }) {
         </div>
         <div className="flex gap-2 mt-3 justify-between items-center">
           <p className=" inline-block max-w-50 overflow-hidden max-h-12 ">
-            Hai How are you what are you doing H
+            {lastMessages[value._id]?.chat}
           </p>
           <p className="rounded-4xl px-2 bg-blue-700 text-white">100</p>
         </div>

@@ -14,5 +14,10 @@ messageRouter.get(
   authValidation,
   messageController.getMessages
 );
+messageRouter.get(
+  "/get/allMessages",
+  authValidation,
+  messageController.getAllMessages
+);
 
 module.exports = messageRouter;

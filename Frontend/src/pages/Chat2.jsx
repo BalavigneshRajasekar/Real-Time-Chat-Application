@@ -66,7 +66,7 @@ function Chat2({ changeScreen }) {
         </div>
       ) : (
         // Message container
-        <div className="flex-1 overflow-y-auto h-[calc(100vh-220px)] border border-indigo-200 border-b-0  ">
+        <div className="flex-1 overflow-y-auto h-[calc(100vh-220px)] border border-indigo-200 border-b-0 ">
           {messages?.map((msg, i) => {
             let currentMsgDate = new Date(msg.createdAt).toDateString();
             let previousMsgDate = new Date(
@@ -132,7 +132,6 @@ function Chat2({ changeScreen }) {
               <div className="w-3 h-3 bg-black rounded-4xl ease-in-out animate-bounce"></div>
             </div>
           ) : null}
-
           <div ref={lastMessageRef}></div>
         </div>
       )}
