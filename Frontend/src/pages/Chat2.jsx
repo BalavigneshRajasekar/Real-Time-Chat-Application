@@ -4,22 +4,21 @@ import React, { useRef } from "react";
 import { useEffect, useState } from "react";
 import { useSocket } from "../hooks/useSocket";
 import { RxAvatar } from "react-icons/rx";
-import { IoMdArrowBack } from "react-icons/io";
-import { Avatar, Image, message } from "antd";
+
+import { Avatar, Image } from "antd";
 import useAuth from "../hooks/useAuth";
 import MessageInput from "../components/MessageInput";
 import { useDispatch, useSelector } from "react-redux";
-import { setMessages, resetMessages, getMessages } from "../store/asyncCalls";
+import { setMessages } from "../store/asyncCalls";
 import ChatScreenHeader from "../components/ChatScreenHeader";
 
 function Chat2({ changeScreen }) {
   const { socket } = useSocket();
   const { user } = useAuth();
   const lastMessageRef = useRef();
-  const { onlineUsers } = useSocket();
   const [typing, setTyping] = useState(true);
 
-  const { currentRecipient, messages, messageLoading } = useSelector(
+  const { currentRecipient, messageLoading, allMessages } = useSelector(
     (state) => state.users
   );
   const dispatch = useDispatch();
@@ -28,24 +27,17 @@ function Chat2({ changeScreen }) {
   const userId = user._id;
 
   useEffect(() => {
-    dispatch(getMessages(currentRecipient._id));
-  }, [currentRecipient]);
+    socket.on("receive", (newMessage) => {
+      console.log(newMessage);
 
-  useEffect(() => {
-    //TODO get Messages from Db
-
-    socket.on("receive", (messages) => {
-      dispatch(setMessages(messages));
+      dispatch(setMessages({ newMessage, userId }));
     });
 
     socket.on("typing", (value) => {
       setTyping(value);
-      console.log(value);
     });
 
     return () => {
-      // remove previous messages when move to another receiver chat
-      dispatch(resetMessages());
       socket.off("receive");
     };
   }, [user._id, socket, currentRecipient]);
@@ -54,7 +46,8 @@ function Chat2({ changeScreen }) {
   useEffect(() => {
     // Scroll to bottom when new message arrives
     lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, typing]);
+    console.log(allMessages);
+  }, [typing, allMessages]);
 
   return (
     <div className="h-screen  ">
@@ -67,10 +60,10 @@ function Chat2({ changeScreen }) {
       ) : (
         // Message container
         <div className="flex-1 overflow-y-auto h-[calc(100vh-220px)] border border-indigo-200 border-b-0 ">
-          {messages?.map((msg, i) => {
+          {allMessages[currentRecipient._id]?.map((msg, i) => {
             let currentMsgDate = new Date(msg.createdAt).toDateString();
             let previousMsgDate = new Date(
-              messages[i - 1]?.createdAt
+              allMessages[currentRecipient._id][i - 1]?.createdAt
             ).toDateString();
 
             return (

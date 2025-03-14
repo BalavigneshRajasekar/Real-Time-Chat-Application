@@ -12,26 +12,27 @@ import SocketProvider from "./context/SocketContext";
 function App() {
   return (
     <>
-      <Provider store={user}>
-        <AuthProvider>
+      <AuthProvider>
+        <Provider store={user}>
           <SocketProvider>
             <AppRouters />
           </SocketProvider>
-        </AuthProvider>
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick={false}
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-          transition={Bounce}
-        />
-      </Provider>
+
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick={false}
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+            transition={Bounce}
+          />
+        </Provider>
+      </AuthProvider>
     </>
   );
 }

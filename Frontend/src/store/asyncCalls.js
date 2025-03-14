@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "../utilities/axiosConfig";
+import useAuth from "../hooks/useAuth";
 
 //Get Receiver details when app loads to show user to message
 export const getUserData = createAsyncThunk(
@@ -62,11 +63,28 @@ const asyncCalls = createSlice({
     setCurrentRecipient: (state, action) => {
       state.currentRecipient = action.payload;
     },
-    setMessages: (state, action) => {
-      console.log(action.payload);
 
-      state.messages = [...state.messages, action.payload];
+    setMessages: (state, action) => {
+      //Destructure the payload Data
+      const { newMessage, userId } = action.payload;
+
+      const { receiverID, senderID } = newMessage;
+
+      console.log(receiverID);
+      //Check whether user ID and receiver ID are same
+      let confirmReceiver = userId == receiverID ? senderID : receiverID;
+
+      //Check if the users text the recipient for first time
+      if (!state.allMessages[confirmReceiver]) {
+        state.allMessages[confirmReceiver] = [];
+      }
+      //Add new message to the array of messages for respective user
+      state.allMessages[confirmReceiver] = [
+        ...state.allMessages[confirmReceiver],
+        newMessage,
+      ];
     },
+
     resetMessages: (state, action) => {
       state.messages = [];
     },
@@ -84,25 +102,15 @@ const asyncCalls = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
-      // Get messages from Thunk and validate them
-      .addCase(getMessages.pending, (state) => {
-        state.messageLoading = true;
-      })
-      .addCase(getMessages.fulfilled, (state, action) => {
-        state.messageLoading = false;
 
-        state.messages = action.payload;
-      })
-      .addCase(getMessages.rejected, (state, action) => {
-        state.messageLoading = false;
-        state.messageError = action.error.message;
-      })
       // Get all messages and lastMessages and count
       .addCase(getAllMessages.pending, (state) => {
         state.loading = true;
       })
       .addCase(getAllMessages.fulfilled, (state, action) => {
         state.loading = false;
+        //Get Array of data which contains the recipient id and messages array
+        //We extract and set to allMessages state like key value pair {87656342534455:[message]}
         action.payload.forEach((data) => {
           state.allMessages[data._id] = data.messages;
           state.lastMessages[data._id] = data.lastMessage;

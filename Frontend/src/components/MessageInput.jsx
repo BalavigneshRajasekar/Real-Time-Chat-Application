@@ -29,7 +29,7 @@ function MessageInput() {
       createdAt: Date.now(),
     };
 
-    dispatch(setMessages(newMessage));
+    dispatch(setMessages({ newMessage, userId }));
     socket.emit("sendMessage", {
       userId,
       receiver,

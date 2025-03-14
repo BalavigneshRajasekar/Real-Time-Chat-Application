@@ -10,21 +10,18 @@ import { getAllMessages, setCurrentRecipient } from "../store/asyncCalls";
 
 function Home() {
   const { onlineUsers } = useSocket();
-  const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const { receiverData, currentRecipient } = useSelector(
+  const { receiverData, currentRecipient, allMessages } = useSelector(
     (state) => state.users
   );
   const [chatScreen, setChatScreen] = useState(false);
+
   useEffect(() => {
     dispatch(getAllMessages());
-
-    console.log(onlineUsers);
   }, [onlineUsers]);
 
   const changeScreen = (value) => {
-    console.log(value);
     dispatch(setCurrentRecipient(value));
 
     if (window.innerWidth < 700) {

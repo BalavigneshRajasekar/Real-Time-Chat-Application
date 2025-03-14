@@ -22,7 +22,7 @@ const mainSocket = (io) => {
       "sendMessage",
       async ({ userId, receiver, text, img, createdAt }) => {
         let imgUrl = img;
-        const messages = {
+        const newMessages = {
           senderID: userId,
           receiverID: receiver,
           chat: text,
@@ -34,7 +34,7 @@ const mainSocket = (io) => {
         //If user has multiple open devices we need to send users own msg to him multiple open devices
         userSocketId?.forEach((socketId) => {
           if (socket.id !== socketId) {
-            io.to(socketId).emit("receive", messages);
+            io.to(socketId).emit("receive", newMessages);
           }
         });
 
@@ -43,17 +43,17 @@ const mainSocket = (io) => {
         if (receiverSocketId) {
           // If receiver has multiple open devices we need to send all open devices
           receiverSocketId.forEach((socketId) => {
-            io.to(socketId).emit("receive", messages);
+            io.to(socketId).emit("receive", newMessages);
           });
         }
 
         // Upload Image to cloudinary
         imgUrl = await Utilities.uploadBase64(img);
-        messages.image = imgUrl;
+        newMessages.image = imgUrl;
 
         //Save Messages to DB
         try {
-          await messageService.createMessage(messages);
+          await messageService.createMessage(newMessages);
         } catch (e) {
           console.log("Error while saving message", e);
         }
