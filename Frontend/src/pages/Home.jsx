@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Chat2 from "./Chat2";
 import SearchBar from "../components/SearchBar";
 import { getAllMessages, setCurrentRecipient } from "../store/asyncCalls";
+import { Card } from "antd";
 
 function Home() {
   const { onlineUsers } = useSocket();
@@ -42,7 +43,7 @@ function Home() {
           {/* Search bar for search user */}
           <SearchBar />
           {/* List of user name cards */}
-          {receiverData &&
+          {receiverData ? (
             receiverData.map((value, i) => {
               return (
                 <UserNameCard
@@ -51,7 +52,10 @@ function Home() {
                   changeScreen={changeScreen}
                 />
               );
-            })}
+            })
+          ) : (
+            <Card loading></Card>
+          )}
         </aside>
         {/* Chat screen */}
         <aside

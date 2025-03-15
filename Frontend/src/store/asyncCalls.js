@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "../utilities/axiosConfig";
-import useAuth from "../hooks/useAuth";
 
 //Get Receiver details when app loads to show user to message
 export const getUserData = createAsyncThunk(
@@ -67,10 +66,8 @@ const asyncCalls = createSlice({
     setMessages: (state, action) => {
       //Destructure the payload Data
       const { newMessage, userId } = action.payload;
-
       const { receiverID, senderID } = newMessage;
 
-      console.log(receiverID);
       //Check whether user ID and receiver ID are same
       let confirmReceiver = userId == receiverID ? senderID : receiverID;
 
@@ -83,6 +80,9 @@ const asyncCalls = createSlice({
         ...state.allMessages[confirmReceiver],
         newMessage,
       ];
+
+      //  set Last message with update one
+      state.lastMessages[confirmReceiver] = newMessage;
     },
 
     resetMessages: (state, action) => {

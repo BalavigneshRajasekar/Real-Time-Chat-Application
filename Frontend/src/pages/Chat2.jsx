@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useSocket } from "../hooks/useSocket";
 import { RxAvatar } from "react-icons/rx";
 
+import { BiCheckDouble } from "react-icons/bi";
 import { Avatar, Image } from "antd";
 import useAuth from "../hooks/useAuth";
 import MessageInput from "../components/MessageInput";
@@ -28,8 +29,6 @@ function Chat2({ changeScreen }) {
 
   useEffect(() => {
     socket.on("receive", (newMessage) => {
-      console.log(newMessage);
-
       dispatch(setMessages({ newMessage, userId }));
     });
 
@@ -46,7 +45,6 @@ function Chat2({ changeScreen }) {
   useEffect(() => {
     // Scroll to bottom when new message arrives
     lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
-    console.log(allMessages);
   }, [typing, allMessages]);
 
   return (
@@ -92,6 +90,7 @@ function Chat2({ changeScreen }) {
                       }
                     ></Avatar>
                   )}
+
                   <div
                     className={`flex flex-col ml-2 gap-1 shadow-2xs ${
                       msg.senderID == userId ? "userClr" : "senderClr"
@@ -107,16 +106,22 @@ function Chat2({ changeScreen }) {
                         className="rounded-md"
                       ></Image>
                     )}
-
-                    <span className="text-gray-500 text-xs ">
-                      {new Date(msg.createdAt).toLocaleTimeString()}
-                    </span>
+                    <div className="flex  w-full justify-between gap-2 items-center">
+                      {msg.senderID == userId && (
+                        <span className="inline-block -mr-2">
+                          <BiCheckDouble className="inline-block" />
+                        </span>
+                      )}
+                      <span className="text-gray-500 text-xs ">
+                        {new Date(msg.createdAt).toLocaleTimeString()}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
             );
           })}
-
+          {/* Double Tick */}
           {/* Add scroll to bottom so dummy div to track */}
           {typing == currentRecipient._id ? (
             <div className="bg-gray-100 w-fit flex justify-center gap-2 px-6 py-4 rounded-4xl  ml-5 mb-5 mt-3 ">
