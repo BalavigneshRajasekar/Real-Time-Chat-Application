@@ -15,6 +15,7 @@ function UserNameCard({ value, changeScreen }) {
     console.log(lastMessages);
     console.log(lastMessages[value._id]);
   }, [value, lastMessages]);
+
   return (
     <div
       className="flex gap-4 h-fit w-full hover:cursor-pointer hover:bg-gray-900  py-2"
@@ -35,7 +36,12 @@ function UserNameCard({ value, changeScreen }) {
       <div className="w-full border-b-1 border-b-white pb-10 h-fit">
         <div className="flex justify-between items-center">
           <h2 className="text-white">{value.username}</h2>
-          <p className="text-green-600 font-bold">10:20 AM</p>
+          <p className="text-green-600 font-bold">
+            {new Date(lastMessages[value._id].createdAt).toLocaleTimeString(
+              [],
+              { hour: "2-digit", minute: "2-digit" }
+            )}
+          </p>
         </div>
         <div className="flex gap-2 mt-3 justify-between items-center">
           <p className=" inline-block max-w-50 overflow-hidden max-h-12 ">

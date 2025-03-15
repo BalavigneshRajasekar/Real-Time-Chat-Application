@@ -29,9 +29,11 @@ function Chat2({ changeScreen }) {
 
   useEffect(() => {
     socket.on("receive", (newMessage) => {
+      console.log("receiver get message");
+
+      let userId = user._id;
       dispatch(setMessages({ newMessage, userId }));
     });
-
     socket.on("typing", (value) => {
       setTyping(value);
     });
@@ -45,7 +47,7 @@ function Chat2({ changeScreen }) {
   useEffect(() => {
     // Scroll to bottom when new message arrives
     lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [typing, allMessages]);
+  }, [typing, allMessages, currentRecipient]);
 
   return (
     <div className="h-screen  ">
@@ -113,7 +115,10 @@ function Chat2({ changeScreen }) {
                         </span>
                       )}
                       <span className="text-gray-500 text-xs ">
-                        {new Date(msg.createdAt).toLocaleTimeString()}
+                        {new Date(msg.createdAt).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
                       </span>
                     </div>
                   </div>

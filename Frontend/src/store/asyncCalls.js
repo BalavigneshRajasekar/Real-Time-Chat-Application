@@ -64,8 +64,12 @@ const asyncCalls = createSlice({
     },
 
     setMessages: (state, action) => {
+      console.log("receiver change message");
+
       //Destructure the payload Data
       const { newMessage, userId } = action.payload;
+      console.log(action.payload);
+
       const { receiverID, senderID } = newMessage;
 
       //Check whether user ID and receiver ID are same
