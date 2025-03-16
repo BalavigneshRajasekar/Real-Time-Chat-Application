@@ -89,6 +89,10 @@ const asyncCalls = createSlice({
       state.lastMessages[confirmReceiver] = newMessage;
     },
 
+    setMessageSeen: (state, action) => {
+      //TODO set message seen logic whenever We get received message
+    },
+
     resetMessages: (state, action) => {
       state.messages = [];
     },

@@ -111,7 +111,7 @@ function Chat2({ changeScreen }) {
                     <div className="flex  w-full justify-between gap-2 items-center">
                       {msg.senderID == userId && (
                         <span className="inline-block -mr-2">
-                          <BiCheckDouble className="inline-block" />
+                          <BiCheckDouble className="inline-block text-green-600" />
                         </span>
                       )}
                       <span className="text-gray-500 text-xs ">

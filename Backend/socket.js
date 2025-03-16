@@ -27,6 +27,7 @@ const mainSocket = (io) => {
           receiverID: receiver,
           chat: text,
           image: imgUrl,
+          delivered: true,
           createdAt: createdAt,
         };
         const receiverSocketId = manageUser.get(receiver); // this has socket Id align with receiver ID
@@ -45,17 +46,25 @@ const mainSocket = (io) => {
           receiverSocketId.forEach((socketId) => {
             io.to(socketId).emit("receive", newMessages);
           });
+          // Upload Image to cloudinary
+          imgUrl = await Utilities.uploadBase64(img);
+          newMessages.image = imgUrl;
+          // Save Messages to DB
+          try {
+            await messageService.createMessage(newMessages);
+          } catch (e) {
+            console.log("Error while saving message", e);
+          }
         }
-
-        // Upload Image to cloudinary
-        imgUrl = await Utilities.uploadBase64(img);
-        newMessages.image = imgUrl;
-
-        //Save Messages to DB
-        try {
-          await messageService.createMessage(newMessages);
-        } catch (e) {
-          console.log("Error while saving message", e);
+        //If user not logged in the save as not delivered
+        else {
+          // Save Messages to DB as not delivered
+          newMessages.delivered = false;
+          try {
+            await messageService.createMessage(newMessages);
+          } catch (e) {
+            console.log("Error while saving message", e);
+          }
         }
       }
     );
