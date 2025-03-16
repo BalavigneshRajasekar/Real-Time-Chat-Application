@@ -37,10 +37,15 @@ function UserNameCard({ value, changeScreen }) {
         <div className="flex justify-between items-center">
           <h2 className="text-white">{value.username}</h2>
           <p className="text-green-600 font-bold">
-            {new Date(lastMessages[value._id].createdAt).toLocaleTimeString(
-              [],
-              { hour: "2-digit", minute: "2-digit" }
-            )}
+            {new Date().toDateString() ==
+            new Date(lastMessages[value._id]?.createdAt).toDateString()
+              ? new Date(lastMessages[value._id]?.createdAt).toLocaleTimeString(
+                  [],
+                  { hour: "2-digit", minute: "2-digit" }
+                )
+              : new Date(
+                  lastMessages[value._id]?.createdAt
+                ).toLocaleDateString()}
           </p>
         </div>
         <div className="flex gap-2 mt-3 justify-between items-center">
