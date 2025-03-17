@@ -72,15 +72,17 @@ const mainSocket = (io) => {
 
     // Listen for read event from client
     //Change senders message to read:true
-    socket.on("read", async ({ senderID, receiver }) => {
-      console.log("Read event received", senderID, receiver);
+    socket.on("read", async ({ senderID, receiverID }) => {
+      console.log("Read event received", senderID, receiverID);
       //Update read as true in DB for a sender Who send message to user
       // Mark message as read
-      await messageService.updateMessageSeen(senderID, receiver);
-      const readMessages = manageUser.get(receiver);
+      await messageService.updateMessageSeen(senderID, receiverID);
+      const readMessages = manageUser.get(senderID);
+      console.log(readMessages, "read message user");
+
       if (readMessages) {
         readMessages.forEach((socketId) => {
-          io.to(socketId).emit("messageRead", senderID);
+          io.to(socketId).emit("messageRead", { senderID, receiverID });
         });
       }
     });

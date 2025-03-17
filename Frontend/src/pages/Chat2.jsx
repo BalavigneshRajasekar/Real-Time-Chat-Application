@@ -11,7 +11,7 @@ import { Avatar, Image } from "antd";
 import useAuth from "../hooks/useAuth";
 import MessageInput from "../components/MessageInput";
 import { useDispatch, useSelector } from "react-redux";
-import { setMessages } from "../store/asyncCalls";
+import { setMessages, setMessageSeen } from "../store/asyncCalls";
 import ChatScreenHeader from "../components/ChatScreenHeader";
 
 function Chat2({ changeScreen }) {
@@ -56,6 +56,10 @@ function Chat2({ changeScreen }) {
         receiverID: userId,
       });
     }
+    socket.on("messageRead", ({ senderID, receiverID }) => {
+      console.log("message readed", senderID, receiverID);
+      dispatch(setMessageSeen({ senderID, receiverID }));
+    });
   }, [userId, socket, currentRecipient]);
 
   // UseEffect tract the the last chat to scroll

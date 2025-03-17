@@ -26,6 +26,8 @@ function MessageInput() {
       receiverID: currentRecipient._id,
       chat: text,
       image: img,
+      delivered: true,
+      read: false,
       createdAt: Date.now(),
     };
 

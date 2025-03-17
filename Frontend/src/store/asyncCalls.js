@@ -91,6 +91,19 @@ const asyncCalls = createSlice({
 
     setMessageSeen: (state, action) => {
       //TODO set message seen logic whenever We get received message
+      const { receiverID, senderID } = action.payload;
+      console.log(action.payload);
+
+      // update seen as true when ever this method dispatched
+      if (state.allMessages[receiverID]) {
+        console.log("hello from seen change");
+
+        // Create a new array reference (ensuring immutability)
+        state.allMessages[receiverID] = state.allMessages[receiverID].map(
+          (message) =>
+            message.senderID === senderID ? { ...message, read: true } : message
+        );
+      }
     },
 
     resetMessages: (state, action) => {
@@ -130,6 +143,10 @@ const asyncCalls = createSlice({
       });
   },
 });
-export const { setCurrentRecipient, setMessages, resetMessages } =
-  asyncCalls.actions;
+export const {
+  setCurrentRecipient,
+  setMessages,
+  resetMessages,
+  setMessageSeen,
+} = asyncCalls.actions;
 export default asyncCalls.reducer;
