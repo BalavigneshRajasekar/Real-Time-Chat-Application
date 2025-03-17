@@ -13,6 +13,7 @@ import MessageInput from "../components/MessageInput";
 import { useDispatch, useSelector } from "react-redux";
 import { setMessages, setMessageSeen } from "../store/asyncCalls";
 import ChatScreenHeader from "../components/ChatScreenHeader";
+import { current } from "@reduxjs/toolkit";
 
 function Chat2({ changeScreen }) {
   const { socket } = useSocket();
@@ -31,11 +32,17 @@ function Chat2({ changeScreen }) {
   //UseEffect to receive messages and update to the allMessages state
   useEffect(() => {
     socket.on("receive", (newMessage) => {
-      console.log("new message received", newMessage);
-      console.log("receiver get message");
-
       dispatch(setMessages({ newMessage, userId }));
+      //If both user in same chat then we need to trigger the read event
+      if (newMessage.senderID == currentRecipient._id) {
+        socket.emit("read", {
+          senderID: currentRecipient._id,
+          receiverID: userId,
+        });
+      }
     });
+
+    //When typing event happens, emit the event to other users
     socket.on("typing", (value) => {
       setTyping(value);
     });
@@ -47,10 +54,10 @@ function Chat2({ changeScreen }) {
 
   //useEffect to handle the message seen and update seen db
   useEffect(() => {
+    //Mark the current recipients message as seen
+    //Here senderID is recipientID, we need to mark as seen
+    //The message which send by that recipient
     if (currentRecipient._id) {
-      //Mark the current recipients message as seen
-      //Here senderID is recipientID, we need to mark as seen
-      //The message which send by that recipient
       socket.emit("read", {
         senderID: currentRecipient._id,
         receiverID: userId,
