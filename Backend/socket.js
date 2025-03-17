@@ -28,6 +28,7 @@ const mainSocket = (io) => {
           chat: text,
           image: imgUrl,
           delivered: true,
+          read: false,
           createdAt: createdAt,
         };
         const receiverSocketId = manageUser.get(receiver); // this has socket Id align with receiver ID
@@ -68,6 +69,21 @@ const mainSocket = (io) => {
         }
       }
     );
+
+    // Listen for read event from client
+    //Change senders message to read:true
+    socket.on("read", async ({ senderID, receiver }) => {
+      console.log("Read event received", senderID, receiver);
+      //Update read as true in DB for a sender Who send message to user
+      // Mark message as read
+      await messageService.updateMessageSeen(senderID, receiver);
+      const readMessages = manageUser.get(receiver);
+      if (readMessages) {
+        readMessages.forEach((socketId) => {
+          io.to(socketId).emit("messageRead", senderID);
+        });
+      }
+    });
 
     // Listen for typing event from client
     socket.on("listenTyping", (receiverID, userId) => {

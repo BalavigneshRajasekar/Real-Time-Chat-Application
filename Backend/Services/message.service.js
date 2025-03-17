@@ -36,6 +36,17 @@ class MessageService {
     ]);
     return chat;
   }
+
+  async updateMessageSeen(senderID, receiverID) {
+    await Message.updateMany(
+      {
+        senderID: senderID,
+        receiverID: receiverID,
+        read: false,
+      },
+      { $set: { read: true } }
+    );
+  }
 }
 
 module.exports = new MessageService();

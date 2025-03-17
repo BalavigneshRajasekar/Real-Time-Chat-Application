@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useRef } from "react";
@@ -27,11 +28,12 @@ function Chat2({ changeScreen }) {
   //User ID and Current Receiver ID
   const userId = user._id;
 
+  //UseEffect to receive messages and update to the allMessages state
   useEffect(() => {
     socket.on("receive", (newMessage) => {
+      console.log("new message received", newMessage);
       console.log("receiver get message");
 
-      let userId = user._id;
       dispatch(setMessages({ newMessage, userId }));
     });
     socket.on("typing", (value) => {
@@ -41,7 +43,20 @@ function Chat2({ changeScreen }) {
     return () => {
       socket.off("receive");
     };
-  }, [user._id, socket, currentRecipient]);
+  }, [userId, socket, currentRecipient]);
+
+  //useEffect to handle the message seen and update seen db
+  useEffect(() => {
+    if (currentRecipient._id) {
+      //Mark the current recipients message as seen
+      //Here senderID is recipientID, we need to mark as seen
+      //The message which send by that recipient
+      socket.emit("read", {
+        senderID: currentRecipient._id,
+        receiverID: userId,
+      });
+    }
+  }, [userId, socket, currentRecipient]);
 
   // UseEffect tract the the last chat to scroll
   useEffect(() => {
@@ -111,7 +126,13 @@ function Chat2({ changeScreen }) {
                     <div className="flex  w-full justify-between gap-2 items-center">
                       {msg.senderID == userId && (
                         <span className="inline-block -mr-2">
-                          <BiCheckDouble className="inline-block text-green-600" />
+                          <BiCheckDouble
+                            className={
+                              msg.read
+                                ? "inline-block text-green-700"
+                                : "inline-block"
+                            }
+                          />
                         </span>
                       )}
                       <span className="text-gray-500 text-xs ">

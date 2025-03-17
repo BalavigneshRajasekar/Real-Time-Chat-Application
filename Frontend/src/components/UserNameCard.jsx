@@ -8,13 +8,8 @@ import { useSelector } from "react-redux";
 function UserNameCard({ value, changeScreen }) {
   const { onlineUsers } = useSocket();
   const { lastMessages } = useSelector((store) => store.users);
-  const [last, setLast] = useState(lastMessages[value._id]);
-  let count = 0;
-  useEffect(() => {
-    console.log(value._id);
-    console.log(lastMessages);
-    console.log(lastMessages[value._id]);
-  }, [value, lastMessages]);
+
+  useEffect(() => {}, [value, lastMessages]);
 
   return (
     <div
