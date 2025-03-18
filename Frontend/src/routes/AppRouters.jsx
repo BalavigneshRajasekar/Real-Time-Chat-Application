@@ -9,6 +9,7 @@ import Chat2 from "../pages/Chat2";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import ForgotPassword from "../pages/ForgotPassword";
+import ResetCode from "../pages/ResetCode";
 
 function AppRouters() {
   const { user } = useAuth();
@@ -47,6 +48,10 @@ function AppRouters() {
           <Route
             path="/forgotPassword"
             element={!user ? <ForgotPassword /> : <Navigate to="/" />}
+          ></Route>
+          <Route
+            path="resetCode/"
+            element={!user ? <ResetCode /> : <Navigate to="/" />}
           ></Route>
         </Routes>
       </BrowserRouter>

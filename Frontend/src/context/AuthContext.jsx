@@ -10,6 +10,7 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isSigning, setIsSigning] = useState(false);
   const [isLogging, setIsLogging] = useState(false);
+  const [resetPasswordLoading, setResetPasswordLoading] = useState(false);
 
   useEffect(() => {
     refreshUser();
@@ -86,6 +87,22 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  // Generate Reset code
+  const generateResetCode = async (email) => {
+    setResetPasswordLoading(true);
+    try {
+      const response = await axiosInstance.post(
+        "/users/forgetPassword/resetCode",
+        { email }
+      );
+      return response.data;
+    } catch (e) {
+      console.error(e);
+      throw new Error(e.message);
+    } finally {
+      setResetPasswordLoading(false);
+    }
+  };
   return (
     <>
       <userAuth.Provider
@@ -98,6 +115,8 @@ const AuthProvider = ({ children }) => {
           isLogging,
           logoutUser,
           googleLogin,
+          generateResetCode,
+          resetPasswordLoading,
         }}
       >
         {children}
