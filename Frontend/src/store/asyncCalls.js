@@ -53,6 +53,7 @@ const asyncCalls = createSlice({
     messages: [], // all messages between current sender and current receiver
     lastMessages: {},
     allMessages: {},
+    logoutModal: false,
     error: null,
     loading: false,
     messageLoading: false,
@@ -63,6 +64,7 @@ const asyncCalls = createSlice({
       state.currentRecipient = action.payload;
     },
 
+    //Set new messages Handle here
     setMessages: (state, action) => {
       console.log("receiver change message");
 
@@ -89,6 +91,7 @@ const asyncCalls = createSlice({
       state.lastMessages[confirmReceiver] = newMessage;
     },
 
+    //Handle message seen status updates here
     setMessageSeen: (state, action) => {
       //TODO set message seen logic whenever We get received message
       const { receiverID, senderID } = action.payload;
@@ -108,6 +111,9 @@ const asyncCalls = createSlice({
 
     resetMessages: (state, action) => {
       state.messages = [];
+    },
+    setLogoutModal: (state, action) => {
+      state.logoutModal = !state.logoutModal;
     },
   },
   extraReducers: (builder) => {
@@ -148,5 +154,6 @@ export const {
   setMessages,
   resetMessages,
   setMessageSeen,
+  setLogoutModal,
 } = asyncCalls.actions;
 export default asyncCalls.reducer;

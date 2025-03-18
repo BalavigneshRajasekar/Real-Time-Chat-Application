@@ -13,7 +13,6 @@ import MessageInput from "../components/MessageInput";
 import { useDispatch, useSelector } from "react-redux";
 import { setMessages, setMessageSeen } from "../store/asyncCalls";
 import ChatScreenHeader from "../components/ChatScreenHeader";
-import { current } from "@reduxjs/toolkit";
 
 function Chat2({ changeScreen }) {
   const { socket } = useSocket();

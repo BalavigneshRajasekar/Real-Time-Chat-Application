@@ -8,12 +8,13 @@ import Chat2 from "./Chat2";
 import SearchBar from "../components/SearchBar";
 import { getAllMessages, setCurrentRecipient } from "../store/asyncCalls";
 import { Card } from "antd";
+import LogoutModal from "../components/LogoutModal";
 
 function Home() {
   const { onlineUsers } = useSocket();
 
   const dispatch = useDispatch();
-  const { receiverData, currentRecipient, allMessages } = useSelector(
+  const { receiverData, currentRecipient, logoutModal } = useSelector(
     (state) => state.users
   );
   const [chatScreen, setChatScreen] = useState(false);
@@ -31,7 +32,7 @@ function Home() {
   };
 
   return (
-    <div className="bg-gradient-to-r from-gray-900 to-sky-950 w-screen ">
+    <div className="bg-gradient-to-r from-gray-900 to-sky-950 w-screen relative">
       <div className="flex gap-2 w-screen">
         <aside
           className={
@@ -73,6 +74,8 @@ function Home() {
           <Outlet />
         </aside>
       </div>
+
+      {logoutModal && <LogoutModal />}
     </div>
   );
 }

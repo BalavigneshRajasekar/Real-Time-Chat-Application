@@ -44,7 +44,7 @@ class MessageService {
         receiverID: receiverID,
         read: false,
       },
-      { $set: { read: true } }
+      { $set: { read: true, delivered: true } }
     );
   }
 }

@@ -20,14 +20,14 @@ const mainSocket = (io) => {
 
     socket.on(
       "sendMessage",
-      async ({ userId, receiver, text, img, createdAt }) => {
+      async ({ userId, receiver, text, img, createdAt, delivered }) => {
         let imgUrl = img;
         const newMessages = {
           senderID: userId,
           receiverID: receiver,
           chat: text,
           image: imgUrl,
-          delivered: true,
+          delivered: delivered,
           read: false,
           createdAt: createdAt,
         };
@@ -57,8 +57,11 @@ const mainSocket = (io) => {
             console.log("Error while saving message", e);
           }
         }
-        //If user not logged in the save as not delivered
+        //If user not logged in then save as not delivered
         else {
+          // Upload Image to cloudinary
+          imgUrl = await Utilities.uploadBase64(img);
+          newMessages.image = imgUrl;
           // Save Messages to DB as not delivered
           newMessages.delivered = false;
           try {
@@ -73,17 +76,28 @@ const mainSocket = (io) => {
     // Listen for read event from client
     //Change senders message to read:true
     socket.on("read", async ({ senderID, receiverID }) => {
+      //Contains the same {sender and receiver} chat for seen updates
+      const updateQueue = new Map();
+      let key = `${senderID}-${receiverID}`;
       console.log("Read event received", senderID, receiverID);
       //Update read as true in DB for a sender Who send message to user
-      // Mark message as read
-      await messageService.updateMessageSeen(senderID, receiverID);
-      const readMessages = manageUser.get(senderID);
-      console.log(readMessages, "read message user");
+      //Use Debounce To cutout each DB updation by same chat users
+      //collect same chats and update one time at the end of the delay
+      if (!updateQueue.has(key)) {
+        updateQueue.set(
+          key,
+          setTimeout(async () => {
+            await messageService.updateMessageSeen(senderID, receiverID);
+            const readMessages = manageUser.get(senderID);
 
-      if (readMessages) {
-        readMessages.forEach((socketId) => {
-          io.to(socketId).emit("messageRead", { senderID, receiverID });
-        });
+            if (readMessages) {
+              readMessages.forEach((socketId) => {
+                io.to(socketId).emit("messageRead", { senderID, receiverID });
+              });
+            }
+            updateQueue.delete(key);
+          }, 1000)
+        );
       }
     });
 

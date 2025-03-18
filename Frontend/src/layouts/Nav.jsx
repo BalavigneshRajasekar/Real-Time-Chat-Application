@@ -3,9 +3,11 @@ import React from "react";
 import useAuth from "../hooks/useAuth";
 import { IoIosLogOut } from "react-icons/io";
 import { MdOutlineSettings } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { setLogoutModal } from "../store/asyncCalls";
 
 function Nav() {
-  const { user, logoutUser } = useAuth();
+  const dispatch = useDispatch();
   return (
     <div className="">
       <div className="p-1 bg-neutral-900 text-white text-2xl flex justify-between items-center">
@@ -18,7 +20,7 @@ function Nav() {
             <MdOutlineSettings size={"35px"} />
           </p>
           <p
-            onClick={logoutUser}
+            onClick={() => dispatch(setLogoutModal())}
             className="inline-block cursor-pointer px-3 py-1 w-fit hover:bg-white rounded-4xl  transition-all ease-in-out hover:scale-110 active:scale-90"
           >
             <IoIosLogOut className="inline-block " size={"35px"} />
