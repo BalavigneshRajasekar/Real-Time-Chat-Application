@@ -1,11 +1,13 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { toast } from "react-toastify";
 
 function ResetCode() {
-  const { generateResetCode, resetPasswordLoading } = useAuth();
+  const [resetCode, setResetCode] = useState();
+  const { generateResetCode, resetPasswordLoading, resetPasswordLink } =
+    useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const queryParam = new URLSearchParams(location.search);
@@ -16,11 +18,22 @@ function ResetCode() {
     if (!token) navigate("/login");
   }, []);
 
-  const resend = async () => {
+  const resendCode = async () => {
     try {
       const response = await generateResetCode(email);
       toast.success(response.message);
       navigate(`?token=${response.token}&&email=${email}`);
+    } catch (e) {
+      console.error(e);
+      toast.error(e.message);
+    }
+  };
+  const resetPassword = async () => {
+    if (!resetCode.length >= 5) return;
+    try {
+      const response = await resetPasswordLink(resetCode, token);
+      toast.success(response.message);
+      navigate("/login");
     } catch (e) {
       console.error(e);
       toast.error(e.message);
@@ -37,11 +50,15 @@ function ResetCode() {
         </p>
         <p>{email}</p>
         <input
+          onChange={(e) => setResetCode(e.target.value)}
           type="text"
           placeholder="Reset Code"
           className="w-full p-3 border-2 rounded-md border-white mt-3 placeholder:text-white text-white text-2xl tracking-widest"
         />
-        <button className="w-full h-14 p-2 mt-3 rounded-md bg-gradient-to-l from-orange-300 to-orange-900 text-white hover:bg-gradient-to-r from-orange-300 to-orange-900">
+        <button
+          className="w-full h-14 p-2 mt-3 rounded-md bg-gradient-to-l from-orange-300 to-orange-900 text-white hover:bg-gradient-to-r from-orange-300 to-orange-900"
+          onClick={resetPassword}
+        >
           Submit
         </button>
         <p>
@@ -52,7 +69,7 @@ function ResetCode() {
             <button
               disabled={resetPasswordLoading}
               className="text-white bg-gradient-to-l from-blue-500 to-blue-700 text-white hover:bg-gradient-to-r from-blue-500 to-blue-700"
-              onClick={() => resend()}
+              onClick={() => resendCode()}
             >
               {resetPasswordLoading ? "re-Sending..." : "resend"}
             </button>

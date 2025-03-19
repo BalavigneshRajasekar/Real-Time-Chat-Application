@@ -103,6 +103,29 @@ const AuthProvider = ({ children }) => {
       setResetPasswordLoading(false);
     }
   };
+
+  //Function to generate Reset password Link
+  const resetPasswordLink = async (code, token) => {
+    setResetPasswordLoading(true);
+    try {
+      const response = await axiosInstance.post(
+        "users/forgetPassword/resetLink",
+        { code },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      return response.data.message;
+    } catch (e) {
+      console.error(e);
+      throw new Error(e.message);
+    } finally {
+      setResetPasswordLoading(false);
+    }
+  };
+
   return (
     <>
       <userAuth.Provider
@@ -117,6 +140,7 @@ const AuthProvider = ({ children }) => {
           googleLogin,
           generateResetCode,
           resetPasswordLoading,
+          resetPasswordLink,
         }}
       >
         {children}
