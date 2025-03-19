@@ -51,7 +51,4 @@ server.use("/api/message", messageRouter);
 httpForSocket.listen(3000, () => {
   console.log("Server is running on port 3000");
   createDbConnection(process.env.Mongo_URI); // create connection to MongoDB
-  setTimeout(() => {
-    throw new Error("Unexpected Error!");
-  }, 3000);
 });
