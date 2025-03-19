@@ -1,3 +1,9 @@
+//Handle Uncaught Exceptions
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception", err);
+  console.error("Node process will now exit...");
+});
+
 const express = require("express");
 const cookies = require("cookie-parser");
 const http = require("http");
@@ -45,4 +51,7 @@ server.use("/api/message", messageRouter);
 httpForSocket.listen(3000, () => {
   console.log("Server is running on port 3000");
   createDbConnection(process.env.Mongo_URI); // create connection to MongoDB
+  setTimeout(() => {
+    throw new Error("Unexpected Error!");
+  }, 3000);
 });
