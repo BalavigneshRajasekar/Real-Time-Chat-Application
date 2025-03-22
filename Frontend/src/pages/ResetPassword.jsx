@@ -4,6 +4,7 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { toast } from "react-toastify";
+import PasswordConstraints from "../components/PasswordConstraints";
 
 function ResetPassword() {
   const { updatePassword } = useAuth();
@@ -16,7 +17,7 @@ function ResetPassword() {
     newPassword: false,
     confirmPassword: false,
   });
-  const [newPassword, setNewPassword] = useState();
+  const [newPassword, setNewPassword] = useState(null);
   const [success, setSuccess] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState(null);
   const [passwordErrors, setPasswordErrors] = useState({
@@ -24,27 +25,22 @@ function ResetPassword() {
     confirmPassword: false,
   });
   const [error, setError] = useState({
-    uppercase: null,
-    lowercase: null,
-    numbers: null,
-    specialCharacters: null,
-    length: null,
+    uppercase: false,
+    lowercase: false,
+    numbers: false,
+    specialCharacters: false,
+    length: false,
   });
+
   useEffect(() => {
     if (!token) {
       navigate("/login");
     }
   }, [token]);
+
   const setPasswords = (e) => {
+    //When ever User enter new password we make the error as false
     setPasswordErrors({ ...passwordErrors, newPassword: false });
-    let incomingValue = e.target.value;
-    setError({
-      uppercase: /[A-Z]/.test(incomingValue) ? true : false,
-      lowercase: /[a-z]/.test(incomingValue) ? true : false,
-      numbers: /[0-9]/.test(incomingValue) ? true : false,
-      specialCharacters: /[@$#!%^&*]/.test(incomingValue) ? true : false,
-      length: incomingValue.length >= 6 ? true : false,
-    });
     setNewPassword(e.target.value);
   };
 
@@ -80,7 +76,7 @@ function ResetPassword() {
   };
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 bg-gradient-to-r from-gray-900 to-sky-950 items-center min-h-screen max-h-fit">
+    <div className="grid gap-4 md:grid-cols-2 bg-gradient-to-r from-gray-900 to-sky-950 items-center min-h-screen max-h-fit place-items-center">
       {/* Section A */}
       {/* Reset password contents */}
       <div className="p-5">
@@ -125,32 +121,14 @@ function ResetPassword() {
           )}
         </div>
         {/* password must contains */}
+        <div className="lg:hidden">
+          <PasswordConstraints
+            error={error}
+            setError={setError}
+            password={newPassword}
+          />
+        </div>
 
-        <ol className="p-7 text-white list-disc">
-          <li className={`${error.length ? "text-green-600" : "text-white"}`}>
-            Password must contain at least 6 characters
-          </li>
-          <li
-            className={`${error.uppercase ? "text-green-600" : "text-white"}`}
-          >
-            Password must contain at least one uppercase letter
-          </li>
-          <li
-            className={`${error.lowercase ? "text-green-600" : "text-white"}`}
-          >
-            Password must contain at least one lowercase letter
-          </li>
-          <li className={`${error.numbers ? "text-green-600" : "text-white"}`}>
-            Password must contain at least one number
-          </li>
-          <li
-            className={`${
-              error.specialCharacters ? "text-green-600" : "text-white"
-            }`}
-          >
-            Password must contain at least one special character (e.g.!@#$%^&*)
-          </li>
-        </ol>
         <div className="relative">
           <input
             //Every validation pass it return as true so we convert it to false to disable
@@ -194,6 +172,17 @@ function ResetPassword() {
 
       {/* Section B */}
       {/* Terms and conditions */}
+      {/* password must contains */}
+      <div className=" hidden lg:block bg-cyan-950 p-5 rounded-md mt-40">
+        <h2 className="text-4xl">Password constraints</h2>
+        <div className="w-fit  ">
+          <PasswordConstraints
+            error={error}
+            setError={setError}
+            password={newPassword}
+          />
+        </div>
+      </div>
     </div>
   );
 }
