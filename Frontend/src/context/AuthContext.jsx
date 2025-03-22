@@ -110,7 +110,7 @@ const AuthProvider = ({ children }) => {
     setRestLinkLoading(true);
     try {
       const response = await axiosInstance.post(
-        "users/forgetPassword/resetLink",
+        "/users/forgetPassword/resetLink",
         { code },
         {
           headers: {
@@ -125,6 +125,26 @@ const AuthProvider = ({ children }) => {
       throw new Error(e.message);
     } finally {
       setRestLinkLoading(false);
+    }
+  };
+
+  //Function to Make API call to update reset password to DB
+  const updatePassword = async (token, password) => {
+    try {
+      const response = await axiosInstance.post(
+        "/users/forgetPassword/reset",
+        { password },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      return response.data.message;
+    } catch (e) {
+      console.error(e);
+      if (e.status === 400) throw new Error("Link Expired");
+      throw new Error(e.message);
     }
   };
 
@@ -144,6 +164,7 @@ const AuthProvider = ({ children }) => {
           resetPasswordLoading,
           resetPasswordLink,
           restLinkLoading,
+          updatePassword,
         }}
       >
         {children}

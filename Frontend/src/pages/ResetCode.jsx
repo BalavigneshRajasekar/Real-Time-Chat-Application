@@ -20,7 +20,7 @@ function ResetCode() {
 
   useEffect(() => {
     if (!token) navigate("/login");
-  }, []);
+  }, [token]);
 
   const resendCode = async () => {
     try {
@@ -36,7 +36,7 @@ function ResetCode() {
     if (!resetCode.length >= 5) return;
     try {
       const response = await resetPasswordLink(resetCode, token);
-      toast.success(response.message);
+      toast.success(response);
       navigate("/login");
     } catch (e) {
       console.error(e);

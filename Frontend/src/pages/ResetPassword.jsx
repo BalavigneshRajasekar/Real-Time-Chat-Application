@@ -1,20 +1,28 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import { toast } from "react-toastify";
 
 function ResetPassword() {
+  const { updatePassword } = useAuth();
+  const navigate = useNavigate();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const token = query.get("token");
-  const email = query.get("email");
+  const username = query.get("username");
   const [showPassword, setShowPassword] = useState({
     newPassword: false,
     confirmPassword: false,
   });
   const [newPassword, setNewPassword] = useState();
+  const [success, setSuccess] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState(null);
-  const [confirmError, setConfirmError] = useState(null);
+  const [passwordErrors, setPasswordErrors] = useState({
+    newPassword: false,
+    confirmPassword: false,
+  });
   const [error, setError] = useState({
     uppercase: null,
     lowercase: null,
@@ -22,8 +30,13 @@ function ResetPassword() {
     specialCharacters: null,
     length: null,
   });
-
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, [token]);
   const setPasswords = (e) => {
+    setPasswordErrors({ ...passwordErrors, newPassword: false });
     let incomingValue = e.target.value;
     setError({
       uppercase: /[A-Z]/.test(incomingValue) ? true : false,
@@ -35,23 +48,48 @@ function ResetPassword() {
     setNewPassword(e.target.value);
   };
 
-  const submit = () => {
-    // send password reset request to server with email and token
-    if (newPassword?.length > 0 && newPassword == confirmPassword) {
-      console.log("same");
+  const validateConfirmPassword = (e) => {
+    //If new password and the current target is equal make it false to take the error message
+    if (newPassword == e.target.value) {
+      setPasswordErrors({ ...passwordErrors, confirmPassword: false });
+    }
+    //Here it set the confirm password
+    setConfirmPassword(e.target.value);
+  };
+
+  const submit = async () => {
+    // Check password field is empty or not
+    //Check both password are same
+    try {
+      if (!newPassword) {
+        setPasswordErrors({ ...passwordErrors, newPassword: true });
+      } else if (newPassword !== confirmPassword) {
+        setPasswordErrors({ ...passwordErrors, confirmPassword: true });
+      } else {
+        // Make API call to update password using the token and new password
+        const response = await updatePassword(token, newPassword);
+        toast.success(response);
+        setNewPassword("");
+        setConfirmPassword("");
+      }
+    } catch (e) {
+      // Handle error here
+      console.error(e);
+      toast.error(e.message);
     }
   };
+
   return (
     <div className="grid gap-4 md:grid-cols-2 bg-gradient-to-r from-gray-900 to-sky-950 items-center min-h-screen max-h-fit">
       {/* Section A */}
       {/* Reset password contents */}
       <div className="p-5">
         <div className="flex justify-center p-10">
-          <img src="./chat.png" className="w-20 "></img>
+          <img src="../../public/chat.png" className="w-20 "></img>
         </div>
         {/* Display welcome message */}
         <h1 className="font-bold text-2xl lg:text-4xl text-center bg-gradient-to-l from-amber-300 to-amber-900   bg-clip-text text-transparent ">
-          Hi ! Vignesh
+          Hi ! {username}
         </h1>
         <p className="text-center">
           Please Reset your password, keep remember it or else no issues we have
@@ -67,6 +105,9 @@ function ResetPassword() {
             name="password"
             placeholder="new Password"
           />
+          {passwordErrors.newPassword && (
+            <span className="text-red-600">* Plz enter the password</span>
+          )}
           {showPassword.newPassword ? (
             <FaRegEye
               className="absolute  right-5 top-8 cursor-pointer text-white text-xl"
@@ -119,7 +160,7 @@ function ResetPassword() {
             name="ConfirmPassword"
             value={confirmPassword}
             placeholder="Confirm new password"
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={validateConfirmPassword}
           />
           {showPassword.confirmPassword ? (
             <FaRegEye
@@ -137,7 +178,7 @@ function ResetPassword() {
             />
           )}
         </div>
-        {confirmPassword && (
+        {passwordErrors.confirmPassword && (
           <span className="text-red-600">
             * Password doesn&lsquo;t match with current password
           </span>
