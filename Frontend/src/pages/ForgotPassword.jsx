@@ -28,6 +28,9 @@ function ForgotPassword() {
       {/* Section A */}
       {/* Forgot password contents */}
       <div className="p-5">
+        <div className="flex justify-center p-10">
+          <img src="./chat.png" className="w-20 "></img>
+        </div>
         <h1 className="font-bold text-2xl lg:text-4xl lg:h-12 text-center bg-gradient-to-l from-amber-300 to-amber-900   bg-clip-text text-transparent ">
           Forgot password ?
         </h1>
@@ -39,7 +42,7 @@ function ForgotPassword() {
         <input
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full h-14 p-2 mt-3 rounded-md text-white border border-amber-50"
+          className="w-full h-14 p-2 mt-3 rounded-md text-white border focus:border-amber-600 focus:outline-none"
           type="email"
           placeholder="Enter your email"
         />
