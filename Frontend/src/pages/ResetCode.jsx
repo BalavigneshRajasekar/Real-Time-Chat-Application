@@ -6,8 +6,12 @@ import { toast } from "react-toastify";
 
 function ResetCode() {
   const [resetCode, setResetCode] = useState();
-  const { generateResetCode, resetPasswordLoading, resetPasswordLink } =
-    useAuth();
+  const {
+    generateResetCode,
+    resetPasswordLoading,
+    resetPasswordLink,
+    restLinkLoading,
+  } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const queryParam = new URLSearchParams(location.search);
@@ -56,10 +60,11 @@ function ResetCode() {
           className="w-full p-3 border-2 rounded-md border-white mt-3 placeholder:text-white text-white text-2xl tracking-widest"
         />
         <button
+          disabled={restLinkLoading}
           className="w-full h-14 p-2 mt-3 rounded-md bg-gradient-to-l from-orange-300 to-orange-900 text-white hover:bg-gradient-to-r from-orange-300 to-orange-900"
           onClick={resetPassword}
         >
-          Submit
+          {restLinkLoading ? "Verifying code..." : "verify code"}
         </button>
         <p>
           If you didn&rsquo;t receive the code, please check your spam folder or

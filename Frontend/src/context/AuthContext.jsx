@@ -11,6 +11,7 @@ const AuthProvider = ({ children }) => {
   const [isSigning, setIsSigning] = useState(false);
   const [isLogging, setIsLogging] = useState(false);
   const [resetPasswordLoading, setResetPasswordLoading] = useState(false);
+  const [restLinkLoading, setRestLinkLoading] = useState(false);
 
   useEffect(() => {
     refreshUser();
@@ -106,7 +107,7 @@ const AuthProvider = ({ children }) => {
 
   //Function to generate Reset password Link
   const resetPasswordLink = async (code, token) => {
-    setResetPasswordLoading(true);
+    setRestLinkLoading(true);
     try {
       const response = await axiosInstance.post(
         "users/forgetPassword/resetLink",
@@ -120,9 +121,10 @@ const AuthProvider = ({ children }) => {
       return response.data.message;
     } catch (e) {
       console.error(e);
+      if (e.status === 400) throw new Error("Code Expired");
       throw new Error(e.message);
     } finally {
-      setResetPasswordLoading(false);
+      setRestLinkLoading(false);
     }
   };
 
@@ -141,6 +143,7 @@ const AuthProvider = ({ children }) => {
           generateResetCode,
           resetPasswordLoading,
           resetPasswordLink,
+          restLinkLoading,
         }}
       >
         {children}

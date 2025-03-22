@@ -8,6 +8,7 @@ function ForgotPassword() {
   const [email, setEmail] = useState("");
   const { generateResetCode, resetPasswordLoading } = useAuth();
   const navigate = useNavigate();
+
   const sendResetCode = async () => {
     // Call your backend API to send a password reset email
     try {
@@ -27,11 +28,11 @@ function ForgotPassword() {
       {/* Section A */}
       {/* Forgot password contents */}
       <div className="p-5">
-        <h1 className="font-bold text-2xl lg:text-4xl  text-center bg-gradient-to-l from-amber-300 to-amber-900   bg-clip-text text-transparent ">
+        <h1 className="font-bold text-2xl lg:text-4xl lg:h-12 text-center bg-gradient-to-l from-amber-300 to-amber-900   bg-clip-text text-transparent ">
           Forgot password ?
         </h1>
-        <p className="text-center mt-5">
-          Enter your email to receive a password reset link
+        <p className="text-center ">
+          Enter your registered email to receive a password reset link
         </p>
         {/* Email input */}
         <label className="text-white">Email</label>
