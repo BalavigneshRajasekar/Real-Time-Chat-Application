@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import PasswordConstraints from "../components/PasswordConstraints";
 
 function ResetPassword() {
-  const { updatePassword } = useAuth();
+  const { updatePassword, resetPasswordLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
@@ -166,7 +166,7 @@ function ResetPassword() {
           className="w-full h-14 p-2 mt-3 rounded-md bg-gradient-to-l from-orange-300 to-orange-900 text-white hover:bg-gradient-to-r from-orange-300 to-orange-900"
           onClick={() => submit()}
         >
-          Change
+          {resetPasswordLoading ? "Resetting..." : "Reset password"}
         </button>
       </div>
 
