@@ -9,14 +9,14 @@ import SearchBar from "../components/SearchBar";
 import { getAllMessages, setCurrentRecipient } from "../store/asyncCalls";
 import { Card } from "antd";
 import LogoutModal from "../components/LogoutModal";
+import ProfileModel from "../components/ProfileModel";
 
 function Home() {
   const { onlineUsers } = useSocket();
 
   const dispatch = useDispatch();
-  const { receiverData, currentRecipient, logoutModal } = useSelector(
-    (state) => state.users
-  );
+  const { receiverData, currentRecipient, logoutModal, profileModal } =
+    useSelector((state) => state.users);
   const [chatScreen, setChatScreen] = useState(false);
 
   useEffect(() => {
@@ -74,7 +74,7 @@ function Home() {
           <Outlet />
         </aside>
       </div>
-
+      {profileModal && <ProfileModel />}
       {logoutModal && <LogoutModal />}
     </div>
   );

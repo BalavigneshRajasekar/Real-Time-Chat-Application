@@ -54,6 +54,7 @@ const asyncCalls = createSlice({
     lastMessages: {},
     allMessages: {},
     logoutModal: false,
+    profileModal: false,
     error: null,
     loading: false,
     messageLoading: false,
@@ -115,6 +116,9 @@ const asyncCalls = createSlice({
     setLogoutModal: (state, action) => {
       state.logoutModal = !state.logoutModal;
     },
+    setProfileModal: (state, action) => {
+      state.profileModal = !state.profileModal;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -155,5 +159,6 @@ export const {
   resetMessages,
   setMessageSeen,
   setLogoutModal,
+  setProfileModal,
 } = asyncCalls.actions;
 export default asyncCalls.reducer;

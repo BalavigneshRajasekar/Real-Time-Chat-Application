@@ -6,6 +6,7 @@ import useAuth from "../hooks/useAuth";
 
 function SearchBar() {
   const { user } = useAuth();
+
   return (
     <div>
       <div className="flex gap-3">
