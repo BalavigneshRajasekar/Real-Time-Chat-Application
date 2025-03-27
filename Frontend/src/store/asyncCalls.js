@@ -117,7 +117,9 @@ const asyncCalls = createSlice({
       state.logoutModal = !state.logoutModal;
     },
     setProfileModal: (state, action) => {
-      state.profileModal = !state.profileModal;
+      state.profileModal = action.payload
+        ? action.payload
+        : !state.profileModal;
     },
   },
   extraReducers: (builder) => {

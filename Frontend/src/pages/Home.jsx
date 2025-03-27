@@ -6,7 +6,11 @@ import { useSocket } from "../hooks/useSocket";
 import { useDispatch, useSelector } from "react-redux";
 import Chat2 from "./Chat2";
 import SearchBar from "../components/SearchBar";
-import { getAllMessages, setCurrentRecipient } from "../store/asyncCalls";
+import {
+  getAllMessages,
+  setCurrentRecipient,
+  setProfileModal,
+} from "../store/asyncCalls";
 import { Card } from "antd";
 import LogoutModal from "../components/LogoutModal";
 import ProfileModel from "../components/ProfileModel";

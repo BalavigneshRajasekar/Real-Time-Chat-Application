@@ -5,12 +5,16 @@ import { motion } from "motion/react";
 import { Avatar, Image, Upload } from "antd";
 import useAuth from "../hooks/useAuth";
 import { FaCamera } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { setProfileModal } from "../store/asyncCalls";
 function ProfileModel() {
+  const dispatch = useDispatch();
   const { user } = useAuth();
   return (
     <>
       {/* Animation div */}
       <motion.div
+        onClick={() => dispatch(setProfileModal(false))}
         className="w-screen absolute rounded-2xl text-center top-1 flex justify-center"
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
