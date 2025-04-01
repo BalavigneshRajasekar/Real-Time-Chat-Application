@@ -43,3 +43,9 @@
   border-radius: 5px;
   align-items: end;
 }
+
+.profileBox {
+  position: absolute;
+  top: 1%;
+  transform: translate(-50%, -50%);
+}

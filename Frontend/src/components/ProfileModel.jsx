@@ -7,6 +7,7 @@ import useAuth from "../hooks/useAuth";
 import { FaCamera } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { setProfileModal } from "../store/asyncCalls";
+import "../App.css";
 function ProfileModel() {
   const dispatch = useDispatch();
   const { user } = useAuth();
@@ -15,7 +16,7 @@ function ProfileModel() {
       {/* Animation div */}
       <motion.div
         onClick={() => dispatch(setProfileModal(false))}
-        className="w-screen absolute rounded-2xl text-center top-1 flex justify-center"
+        className="w-fit rounded-2xl text-center profileBox"
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         exit={{ scale: 0 }}
