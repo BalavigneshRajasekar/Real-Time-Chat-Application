@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "motion/react";
 import { Avatar, Image, Upload } from "antd";
 import useAuth from "../hooks/useAuth";
@@ -8,14 +8,42 @@ import { FaCamera } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { setProfileModal } from "../store/asyncCalls";
 import "../App.css";
+import { toast } from "react-toastify";
 function ProfileModel() {
+  const [profile, setProfile] = useState();
   const dispatch = useDispatch();
-  const { user } = useAuth();
+  const { user, uploadProfilePic } = useAuth();
+
+  const showProfilePic = (e) => {
+    const file = e.file.originFileObj;
+    if (!file) {
+      toast.error("Upload Failed please try again");
+      return;
+    }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (e) => {
+      setProfile(e.target.result);
+    };
+  };
+  const sendProfileToServer = async ({ file, onSuccess }) => {
+    console.log("server", file);
+    const data = new FormData();
+    data.append("profile", file);
+    try {
+      const response = await uploadProfilePic(data);
+      toast.success(response);
+      onSuccess("ok");
+    } catch (e) {
+      console.log("upload", e);
+
+      toast.error("error");
+    }
+  };
   return (
     <>
       {/* Animation div */}
       <motion.div
-        onClick={() => dispatch(setProfileModal(false))}
         className="w-fit rounded-2xl text-center profileBox"
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
@@ -27,11 +55,18 @@ function ProfileModel() {
         <div className="w-full lg:w-3xl h-full rounded-2xl p-10 bg-gray-900">
           <h2 className="text-white">Profile</h2>
           <div className="w-full  h-fit">
-            <Image
-              src={user.profilePic ? user.profilePic : "user.png"}
-              style={{ width: "150px", height: "150px", borderRadius: "50%" }}
-            ></Image>
-            <Upload className="relative">
+            <Avatar
+              src={profile}
+              style={{ width: "150px", height: "150px" }}
+              size={"large"}
+            ></Avatar>
+            <Upload
+              accept="image/*"
+              customRequest={sendProfileToServer}
+              className="relative"
+              onChange={showProfilePic}
+              showUploadList={false}
+            >
               <FaCamera className="text-white text-2xl inline-block absolute bottom-0 hover:cursor-pointer active:scale-75 transition-all" />
             </Upload>
           </div>

@@ -148,6 +148,20 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  //Function toi upload profile
+  const uploadProfilePic = async (profile) => {
+    console.log("context", profile);
+
+    try {
+      const response = await axiosInstance.post("/app/addProfile", profile);
+      return response.data.message;
+    } catch (e) {
+      console.log("context", e);
+
+      throw new Error(e);
+    }
+  };
+
   return (
     <>
       <userAuth.Provider
@@ -165,6 +179,7 @@ const AuthProvider = ({ children }) => {
           resetPasswordLink,
           restLinkLoading,
           updatePassword,
+          uploadProfilePic,
         }}
       >
         {children}

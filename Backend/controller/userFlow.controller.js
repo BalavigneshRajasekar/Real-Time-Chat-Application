@@ -8,7 +8,9 @@ class AppFLow {
       const user = req.user;
       // Upload profile image to cloudinary
       const imageUrl = await Utilities.uploadImage(req);
-      // Update this imageURL and Display name in DB
+      // Update this imageURL and Display name in
+      console.log(imageUrl);
+
       await userService.findAndUpdateUser(user.email, {
         profilePic: imageUrl,
       });
