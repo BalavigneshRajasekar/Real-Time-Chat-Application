@@ -56,7 +56,14 @@ function ProfileModel() {
           <h2 className="text-white">Profile</h2>
           <div className="w-full  h-fit">
             <Avatar
-              src={profile}
+              referrerPolicy="no-referrer"
+              src={
+                profile
+                  ? profile
+                  : user.profilePic
+                  ? user.profilePic
+                  : "user.png"
+              }
               style={{ width: "150px", height: "150px" }}
               size={"large"}
             ></Avatar>
