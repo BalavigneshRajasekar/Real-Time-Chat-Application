@@ -67,10 +67,11 @@ class UserAuth {
   async verifyAuthUser(req, res) {
     try {
       const user = req.user;
+      const authUsers = await userService.getUser({ email: user.email });
       if (!user) {
         throw new Error("User not authenticated");
       }
-      res.status(200).json(user);
+      res.status(200).json(authUsers);
     } catch (e) {
       console.log(e);
       res.status(500).json({ message: "server error" });
