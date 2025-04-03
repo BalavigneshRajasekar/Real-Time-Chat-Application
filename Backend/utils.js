@@ -32,7 +32,7 @@ class Utilities {
       maxAge: 60 * 60 * 1000,
       httpOnly: true,
       secure: process.env.Node_ENV !== "development",
-      sameSite: "Strict", // set to 'none' for cross-site requests
+      sameSite: "none", // set to 'none' for cross-site requests
       path: "/", // set to '/' for all routes
     });
   }
