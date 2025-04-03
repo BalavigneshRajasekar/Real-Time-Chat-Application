@@ -79,6 +79,8 @@ class UserAuth {
 
   async googleLogin(req, res) {
     try {
+      console.log("gLogin request get");
+
       const { tokenId } = req.body;
       const googleUser = await admin.auth().verifyIdToken(tokenId);
       const { email, picture, name } = googleUser;

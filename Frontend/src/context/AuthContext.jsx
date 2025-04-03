@@ -75,6 +75,7 @@ const AuthProvider = ({ children }) => {
       //Get Auth token from Google
       const result = await signInWithPopup(auth, provider);
       const token = await result.user.getIdToken();
+      console.log("token");
 
       //Send token to the server to get User data
       const response = await axiosInstance.post("/users/auth/google", {

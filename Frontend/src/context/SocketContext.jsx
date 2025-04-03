@@ -12,7 +12,7 @@ const SocketProvider = ({ children }) => {
   const [onlineUsers, setOnlineUsers] = useState();
 
   useEffect(() => {
-    const socket = io("http://localhost:3000");
+    const socket = io("https://real-time-chat-application-ttav.onrender.com");
     SetSocket(socket);
     socket.on("connect", () => {
       console.log("User connected" + socket.id);

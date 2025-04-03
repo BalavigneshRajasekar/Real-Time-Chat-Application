@@ -17,11 +17,19 @@ require("dotenv").config();
 const server = express();
 const httpForSocket = http.createServer(server);
 
+//Origins
+const myOrigins = [
+  "http://localhost:3000",
+  "https://chathub-three-flax.vercel.app/login",
+];
+
 //Built in middleware
 server.use(
   cors({
     credentials: true,
-    origin: "*", // Allow all origins to connect to the server
+    origin: myOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow all origins to connect to the server
   })
 ); //Handle Cors for entire app
 server.use(cookies()); //Handle cookies
