@@ -170,6 +170,7 @@ const AuthProvider = ({ children }) => {
           user,
           setUser,
           registerUser,
+          refreshUser,
           isSigning,
           loginUser,
           isLogging,

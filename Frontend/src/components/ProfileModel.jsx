@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 function ProfileModel() {
   const [profile, setProfile] = useState();
   const dispatch = useDispatch();
-  const { user, uploadProfilePic } = useAuth();
+  const { user, uploadProfilePic, refreshUser } = useAuth();
 
   const showProfilePic = (e) => {
     const file = e.file.originFileObj;
@@ -33,6 +33,8 @@ function ProfileModel() {
     try {
       const response = await uploadProfilePic(data);
       toast.success(response);
+      // refresh the user to show the updated details like Profile
+      refreshUser();
       onSuccess("ok");
     } catch (e) {
       console.log("upload", e);
