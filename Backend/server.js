@@ -17,12 +17,6 @@ require("dotenv").config();
 const server = express();
 const httpForSocket = http.createServer(server);
 
-//Origins
-const myOrigins = [
-  "http://localhost:3000",
-  "https://chathub-three-flax.vercel.app",
-];
-
 //Built in middleware
 server.use(
   cors({
@@ -38,7 +32,7 @@ server.use(express.urlencoded({ extended: true })); // accept nested object and 
 // Socket initialized with server
 const io = socketIo(httpForSocket, {
   cors: {
-    origin: "*",
+    origin: ["http://localhost:5173", "https://chathub-three-flax.vercel.app"],
   },
 });
 // Socket connection entry point
