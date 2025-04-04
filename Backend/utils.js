@@ -31,7 +31,7 @@ class Utilities {
     res.cookie("token", token, {
       maxAge: 60 * 60 * 1000,
       httpOnly: true,
-      secure: process.env.Node_ENV !== "development",
+      secure: true,
       sameSite: "none", // set to 'none' for cross-site requests
       path: "/", // set to '/' for all routes
     });
