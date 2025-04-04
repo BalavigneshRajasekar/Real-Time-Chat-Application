@@ -52,7 +52,10 @@ server.use("/api/app", userFlow);
 server.use("/api/message", messageRouter);
 
 // Start the server on port 3000
-httpForSocket.listen(3000, () => {
-  console.log("Server is running on port 3000");
-  createDbConnection(process.env.Mongo_URI); // create connection to MongoDB
-});
+// httpForSocket.listen(3000, () => {
+//   console.log("Server is running on port 3000");
+
+// });
+createDbConnection(process.env.Mongo_URI); // create connection to MongoDB
+
+module.exports = httpForSocket;
