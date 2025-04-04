@@ -21,7 +21,9 @@ const httpForSocket = http.createServer(server);
 server.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:5173", "https://chathub-three-flax.vercel.app"],
+    origin: "https://chathub-three-flax.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     // Allow all origins to connect to the server
   })
 ); //Handle Cors for entire app
@@ -32,7 +34,7 @@ server.use(express.urlencoded({ extended: true })); // accept nested object and 
 // Socket initialized with server
 const io = socketIo(httpForSocket, {
   cors: {
-    origin: ["http://localhost:5173", "https://chathub-three-flax.vercel.app"],
+    origin: "https://chathub-three-flax.vercel.app",
   },
 });
 // Socket connection entry point
