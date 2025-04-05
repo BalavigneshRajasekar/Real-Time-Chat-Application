@@ -12,7 +12,7 @@ const SocketProvider = ({ children }) => {
   const [onlineUsers, setOnlineUsers] = useState();
 
   useEffect(() => {
-    const socket = io("https://real-time-chat-application-ttav.onrender.com", {
+    const socket = io("http://localhost3000", {
       withCredentials: true,
       transports: ["polling"],
     });
