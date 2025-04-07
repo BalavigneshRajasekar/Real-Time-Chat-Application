@@ -32,15 +32,19 @@ function UserNameCard({ value, changeScreen }) {
         <div className="flex justify-between items-center">
           <h2 className="text-white">{value.username}</h2>
           <p className="text-green-600 font-bold">
-            {new Date().toDateString() ==
-            new Date(lastMessages[value._id]?.createdAt).toDateString()
-              ? new Date(lastMessages[value._id]?.createdAt).toLocaleTimeString(
-                  [],
-                  { hour: "2-digit", minute: "2-digit" }
-                )
-              : new Date(
-                  lastMessages[value._id]?.createdAt
-                ).toLocaleDateString()}
+            {lastMessages[value._id]
+              ? new Date().toDateString() ==
+                new Date(lastMessages[value._id]?.createdAt).toDateString()
+                ? new Date(
+                    lastMessages[value._id]?.createdAt
+                  ).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                : new Date(
+                    lastMessages[value._id]?.createdAt
+                  ).toLocaleDateString()
+              : "NA"}
           </p>
         </div>
         <div className="flex gap-2 mt-3 justify-between items-center">
@@ -49,7 +53,7 @@ function UserNameCard({ value, changeScreen }) {
               ? lastMessages[value._id].chat
               : "start the convo"}
           </p>
-          <p className="rounded-4xl px-2 bg-blue-700 text-white">100</p>
+          <p className="rounded-4xl px-2 bg-blue-700 text-white">{10}</p>
         </div>
       </div>
     </div>
