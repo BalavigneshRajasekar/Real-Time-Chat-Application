@@ -2,6 +2,7 @@ const nodeMailer = require("nodemailer");
 const userService = require("./Services/user.service");
 const jwt = require("jsonwebtoken");
 const cloudinary = require("./config");
+const axios = require("axios");
 require("dotenv").config();
 
 // Utilities class for various utility functions
@@ -64,8 +65,21 @@ class Utilities {
     return transporter.sendMail(mailOptions);
   }
 
-  //Upload a file to the cloudinary
+  //Upload a file to the cloudinary For Profile Images
   static async uploadImage(req) {
+    let imageBuffer;
+    //Handle image from form or multer
+    if (req.file) {
+      imageBuffer = req.file.buffer;
+    }
+    //handle Image from google ulr
+    else if (typeof req == "string" && req.startsWith("https")) {
+      const imageResponse = await axios.get(req, {
+        responseType: "arraybuffer",
+      });
+      imageBuffer = Buffer.from(imageResponse.data);
+      console.log("gogle image", imageBuffer);
+    }
     const url = await new Promise((resolve, reject) => {
       const result = cloudinary.uploader.upload_stream(
         {
@@ -76,12 +90,12 @@ class Utilities {
           else resolve(result);
         }
       );
-      result.end(req.file.buffer);
+      result.end(imageBuffer);
     });
     return url.secure_url;
   }
 
-  //Upload a Base64 url to cloudinary
+  //Upload a Base64 url to cloudinary basically a chat Image
   static async uploadBase64(imgUrl) {
     try {
       if (imgUrl?.startsWith("data:image")) {

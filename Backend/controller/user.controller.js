@@ -79,21 +79,26 @@ class UserAuth {
   }
 
   async googleLogin(req, res) {
+    console.log("cloudinary 1");
     try {
-      console.log("gLogin request get");
-
       const { tokenId } = req.body;
+      console.log("cloudinary");
+
       const googleUser = await admin.auth().verifyIdToken(tokenId);
       const { email, picture, name } = googleUser;
       //Check user with this email already exists in the database
       let user = await userService.getUser({ email: email });
+
+      // Add Google image to cloudinary to overcome Cross site error
+      const convertedGoogleImg = await Utilities.uploadImage(picture);
+      console.log("cloudinary ", convertedGoogleImg);
 
       if (!user) {
         //Create new user
         user = await userService.createUser({
           username: name,
           email: email,
-          profilePic: picture,
+          profilePic: convertedGoogleImg,
         });
       }
       //Generate Log Token add to cookies

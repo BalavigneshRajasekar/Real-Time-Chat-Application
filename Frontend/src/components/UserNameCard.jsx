@@ -18,7 +18,6 @@ function UserNameCard({ value, changeScreen }) {
     >
       <div className="mt-4 relative">
         <Avatar
-          referrerPolicy="no-referrer"
           style={{ width: "50px", height: "50px" }}
           src={value.profilePic ? value.profilePic : "user.png"}
           alt="User Pic"
