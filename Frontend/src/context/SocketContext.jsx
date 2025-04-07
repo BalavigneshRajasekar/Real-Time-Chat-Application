@@ -12,9 +12,8 @@ const SocketProvider = ({ children }) => {
   const [onlineUsers, setOnlineUsers] = useState();
 
   useEffect(() => {
-    const socket = io("http://localhost3000", {
+    const socket = io("http://localhost:3000", {
       withCredentials: true,
-      transports: ["polling"],
     });
     SetSocket(socket);
     socket.on("connect", () => {

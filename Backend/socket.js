@@ -6,7 +6,6 @@ const mainSocket = (io) => {
 
   io.on("connection", (socket) => {
     console.log("New client connected" + socket.id);
-    console.log(manageUser);
 
     socket.on("join", (userId) => {
       if (!manageUser.has(userId)) {

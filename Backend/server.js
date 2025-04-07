@@ -36,6 +36,7 @@ server.use(express.urlencoded({ extended: true })); // accept nested object and 
 const io = socketIo(httpForSocket, {
   cors: {
     origin: ["http://localhost:5173", "https://chathub-three-flax.vercel.app"],
+    credentials: true,
   },
 });
 // Socket connection entry point
