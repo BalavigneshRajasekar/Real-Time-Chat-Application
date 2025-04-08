@@ -19,7 +19,7 @@ function ChatScreenHeader({ changeScreen }) {
         <div>
           <IoMdArrowBack
             size={"30px"}
-            className="cursor-pointer hover:text-gray-700 inline-block"
+            className="cursor-pointer hover:text-gray-700 inline-block md:hidden"
             onClick={() => changeScreen(currentRecipient)}
           />
           <Image

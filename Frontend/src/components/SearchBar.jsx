@@ -9,9 +9,9 @@ function SearchBar() {
 
   return (
     <div>
-      <div className="flex gap-3">
-        <Avatar src={user.profilePic}></Avatar>
-        <p className="text-white">{user.username}</p>
+      <div className="flex gap-3 p-3  items-center">
+        <Avatar src={user.profilePic} size={"large"}></Avatar>
+        <p className="text-white">{user.username.toUpperCase()}</p>
       </div>
       <input
         type="search"
