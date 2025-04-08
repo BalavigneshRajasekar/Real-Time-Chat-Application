@@ -6,9 +6,11 @@ import { Avatar, Image, Upload } from "antd";
 import useAuth from "../hooks/useAuth";
 import { FaCamera } from "react-icons/fa";
 import { useDispatch } from "react-redux";
+import { ImCancelCircle } from "react-icons/im";
 import { setProfileModal } from "../store/asyncCalls";
 import "../App.css";
 import { toast } from "react-toastify";
+
 function ProfileModel() {
   const [profile, setProfile] = useState();
   const dispatch = useDispatch();
@@ -42,19 +44,36 @@ function ProfileModel() {
       toast.error("error");
     }
   };
+
+  const closeProfileModel = (e) => {
+    //Find the surrounded Div ,
+    //If the div has the className close profile
+    //else No
+    if (e.target.classList.contains("profileBox")) {
+      dispatch(setProfileModal());
+    }
+  };
   return (
     <>
       {/* Animation div */}
       <motion.div
-        className="w-fit rounded-2xl text-center profileBox"
+        className="w-screen rounded-2xl text-center profileBox flex justify-center"
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         exit={{ scale: 0 }}
         transition={{ type: "tween" }}
         key="logout-modal"
+        onClick={(e) => closeProfileModel(e)}
       >
         {/* Main Div */}
-        <div className="w-full lg:w-3xl h-full rounded-2xl p-10 bg-gray-900">
+        <div className="w-full lg:w-3xl h-screen rounded-2xl p-10 bg-gray-900">
+          <div className="flex justify-end">
+            <ImCancelCircle
+              className="text-white text-2xl active:scale-75 transition-all"
+              onClick={() => dispatch(setProfileModal())}
+            />
+          </div>
+
           <h2 className="text-white">Profile</h2>
           <div className="w-full  h-fit">
             <Avatar

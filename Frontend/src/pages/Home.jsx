@@ -37,7 +37,7 @@ function Home() {
           className={
             chatScreen
               ? "hidden md:block"
-              : "h-screen overflow-x-scroll p-5 w-100 "
+              : "h-screen overflow-x-scroll ps-3 w-100 "
           }
         >
           {/* Search bar for search user */}

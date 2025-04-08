@@ -13,7 +13,7 @@ function UserNameCard({ value, changeScreen }) {
 
   return (
     <div
-      className="flex gap-4 h-fit w-full hover:cursor-pointer hover:bg-gray-900  py-2"
+      className="flex gap-4 h-fit w-full hover:cursor-pointer hover:bg-gray-900  py-2 "
       onClick={() => changeScreen(value)}
     >
       <div className="mt-4 relative">
