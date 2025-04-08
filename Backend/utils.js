@@ -72,13 +72,13 @@ class Utilities {
     if (req.file) {
       imageBuffer = req.file.buffer;
     }
-    //handle Image from google ulr
+    //Convert Google Url Image To Buffer
+    //Cloudinary only take buffer
     else if (typeof req == "string" && req.startsWith("https")) {
       const imageResponse = await axios.get(req, {
         responseType: "arraybuffer",
       });
       imageBuffer = Buffer.from(imageResponse.data);
-      console.log("gogle image", imageBuffer);
     }
     const url = await new Promise((resolve, reject) => {
       const result = cloudinary.uploader.upload_stream(
