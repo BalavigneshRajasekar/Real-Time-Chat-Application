@@ -11,6 +11,7 @@ import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { toast } from "react-toastify";
+import toastLoading from "../utilities/toastLoading";
 function Login() {
   const { isLogging, loginUser, googleLogin } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
@@ -51,24 +52,26 @@ function Login() {
     e.preventDefault();
     //If form validation true then only Api call happens
     if (formValidation()) {
+      let Id = toast.loading("Wait a moment...");
       try {
         const response = await loginUser(formData);
-        toast.success(response);
+        toastLoading(Id, "success", response);
       } catch (e) {
         console.log(e);
-        toast.error(e.message);
+        toastLoading(Id, "error", e.message);
       } finally {
         setFormData({ email: "", password: "" });
       }
     }
   };
   const initiateGoogleLogin = async () => {
+    let Id = toast.loading("Logging In...");
     try {
       const response = await googleLogin();
-      toast.success(response);
+      toastLoading(Id, "success", response);
     } catch (e) {
       console.error(e);
-      toast.error(e.message);
+      toastLoading(Id, "error", e.message);
     }
   };
   return (
