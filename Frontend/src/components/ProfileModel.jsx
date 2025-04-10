@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 function ProfileModel() {
   const [profile, setProfile] = useState();
   const dispatch = useDispatch();
-  const { user, uploadProfilePic, refreshUser } = useAuth();
+  const { user, uploadProfilePic, refreshUser, isProfileUpdating } = useAuth();
 
   const showProfilePic = (e) => {
     const file = e.file.originFileObj;
@@ -29,7 +29,6 @@ function ProfileModel() {
     };
   };
   const sendProfileToServer = async ({ file, onSuccess }) => {
-    console.log("server", file);
     const data = new FormData();
     data.append("profile", file);
     try {
@@ -40,8 +39,7 @@ function ProfileModel() {
       onSuccess("ok");
     } catch (e) {
       console.log("upload", e);
-
-      toast.error("error");
+      toast.error(e.message);
     }
   };
 
@@ -75,8 +73,9 @@ function ProfileModel() {
           </div>
 
           <h2 className="text-white">Profile</h2>
-          <div className="w-full  h-fit">
+          <div className="w-full h-fit relative flex justify-center items-center">
             <Avatar
+              className={isProfileUpdating ? "opacity-25" : "opacity-100"}
               referrerPolicy="no-referrer"
               src={
                 profile
@@ -89,14 +88,19 @@ function ProfileModel() {
               size={"large"}
             ></Avatar>
             <Upload
-              accept="image/*"
+              disabled={isProfileUpdating}
+              accept=".jpg"
               customRequest={sendProfileToServer}
-              className="relative"
               onChange={showProfilePic}
               showUploadList={false}
             >
               <FaCamera className="text-white text-2xl inline-block absolute bottom-0 hover:cursor-pointer active:scale-75 transition-all" />
             </Upload>
+            {isProfileUpdating && (
+              <div className=" absolute">
+                <div className="w-14 h-14 rounded-4xl border-8 border-t-amber-500 animate-spin"></div>
+              </div>
+            )}
           </div>
           {/* User Data Container */}
           <div className="text-left">

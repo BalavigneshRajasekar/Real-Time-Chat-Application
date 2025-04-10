@@ -8,11 +8,13 @@ export const userAuth = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  //Loading states---------------------------
   const [isSigning, setIsSigning] = useState(false);
   const [isLogging, setIsLogging] = useState(false);
   const [resetPasswordLoading, setResetPasswordLoading] = useState(false);
   const [restLinkLoading, setRestLinkLoading] = useState(false);
-
+  const [isProfileUpdating, setIsProfileUpdating] = useState(false);
+  //----------------------------------------------------------------
   useEffect(() => {
     refreshUser();
   }, []);
@@ -145,21 +147,21 @@ const AuthProvider = ({ children }) => {
     } catch (e) {
       console.error(e);
       if (e.status === 400) throw new Error("Link Expired");
-      throw new Error(e.message);
+      throw new Error(e.response.data.message);
     }
   };
 
-  //Function toi upload profile
+  //Function to upload profile
   const uploadProfilePic = async (profile) => {
-    console.log("context", profile);
-
+    setIsProfileUpdating(true);
     try {
       const response = await axiosInstance.post("/app/addProfile", profile);
       return response.data.message;
     } catch (e) {
       console.log("context", e);
-
-      throw new Error(e);
+      throw new Error(e.response.data.message);
+    } finally {
+      setIsProfileUpdating(false);
     }
   };
 
@@ -182,6 +184,7 @@ const AuthProvider = ({ children }) => {
           restLinkLoading,
           updatePassword,
           uploadProfilePic,
+          isProfileUpdating,
         }}
       >
         {children}
