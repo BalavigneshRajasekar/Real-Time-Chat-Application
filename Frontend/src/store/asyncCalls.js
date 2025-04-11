@@ -51,8 +51,8 @@ const asyncCalls = createSlice({
     receiverData: [], // All users except self
     currentRecipient: null, // current message recipient
     messages: [], // all messages between current sender and current receiver
-    lastMessages: {},
-    allMessages: {},
+    lastMessages: {}, //last message of each recipient sended to sender
+    allMessages: {}, // all messages between current sender and current receiver
     logoutModal: false,
     profileModal: false,
     error: null,
