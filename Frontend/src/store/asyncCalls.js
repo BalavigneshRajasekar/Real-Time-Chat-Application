@@ -8,8 +8,6 @@ export const getUserData = createAsyncThunk(
   async (thunkAPI) => {
     try {
       const response = await axiosInstance("/app/get/allUsers");
-      console.log(response);
-
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
@@ -24,7 +22,6 @@ export const getMessages = createAsyncThunk(
       const response = await axiosInstance.get(
         `/message/get/messages/${receiverID}`
       );
-      console.log(response);
       return response.data.messages;
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
@@ -37,7 +34,6 @@ export const getAllMessages = createAsyncThunk(
   async (thunkAPI) => {
     try {
       const response = await axiosInstance.get("/message/get/allMessages");
-      console.log(response);
       return response.data.messages;
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
