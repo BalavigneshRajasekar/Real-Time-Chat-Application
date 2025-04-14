@@ -58,7 +58,12 @@ class UserAuth {
   }
   async logout(req, res) {
     try {
-      res.cookie("token", "", { expiresIn: 0 });
+      res.clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        path: "/",
+      });
       res.json({ message: "User logged out successfully" });
     } catch (e) {
       res.status(500).json({ message: e.message, error: "server error" });
