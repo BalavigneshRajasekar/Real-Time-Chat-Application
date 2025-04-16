@@ -44,17 +44,24 @@ export const getAllMessages = createAsyncThunk(
 const asyncCalls = createSlice({
   name: "asyncCalls",
   initialState: {
+    //App level data storing state
     receiverData: [], // All users except self
     currentRecipient: null, // current message recipient
     messages: [], // all messages between current sender and current receiver
     lastMessages: {}, //last message of each recipient sended to sender
     allMessages: {}, // all messages between current sender and current receiver
+    //--------------------------
+    // Modal controller state
     logoutModal: false,
     profileModal: false,
+    groupChatModal: false,
+    //----------------------
+    //Error and Loading controller state
     error: null,
     loading: false,
     messageLoading: false,
     messageError: null,
+    //----------------------------
   },
   reducers: {
     setCurrentRecipient: (state, action) => {
