@@ -10,12 +10,18 @@ import { getAllMessages, setCurrentRecipient } from "../store/asyncCalls";
 import { Card } from "antd";
 import LogoutModal from "../components/LogoutModal";
 import ProfileModel from "../components/ProfileModel";
+import GroupChatModal from "../components/GroupChatModal";
 
 function Home() {
   const { onlineUsers } = useSocket();
   const dispatch = useDispatch();
-  const { receiverData, currentRecipient, logoutModal, profileModal } =
-    useSelector((state) => state.users);
+  const {
+    receiverData,
+    currentRecipient,
+    logoutModal,
+    profileModal,
+    groupChatModal,
+  } = useSelector((state) => state.users);
   const [chatScreen, setChatScreen] = useState(false);
 
   useEffect(() => {
@@ -75,6 +81,7 @@ function Home() {
       </div>
       {profileModal && <ProfileModel />}
       {logoutModal && <LogoutModal />}
+      {groupChatModal && <GroupChatModal />}
     </div>
   );
 }

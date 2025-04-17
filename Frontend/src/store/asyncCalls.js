@@ -124,6 +124,11 @@ const asyncCalls = createSlice({
         ? action.payload
         : !state.profileModal;
     },
+    setGroupChatModal: (state, action) => {
+      state.groupChatModal = action.payload
+        ? action.payload
+        : !state.groupChatModal;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -165,5 +170,6 @@ export const {
   setMessageSeen,
   setLogoutModal,
   setProfileModal,
+  setGroupChatModal,
 } = asyncCalls.actions;
 export default asyncCalls.reducer;
