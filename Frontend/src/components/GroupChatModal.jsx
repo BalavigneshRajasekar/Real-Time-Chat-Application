@@ -5,31 +5,52 @@ import { motion } from "motion/react";
 import { useDispatch } from "react-redux";
 import { ImCancelCircle } from "react-icons/im";
 import { TiTick } from "react-icons/ti";
+import { CiCirclePlus } from "react-icons/ci";
+import { setGroupChatModal } from "../store/asyncCalls";
 
 function GroupChatModal() {
   const dispatch = useDispatch();
+  const closeProfileModel = (e) => {
+    //Find the surrounded Div ,
+    //If the div has the className close profile
+    //else No
+    if (e.target.classList.contains("profileBox")) {
+      dispatch(setGroupChatModal());
+    }
+  };
   return (
     <motion.div
-      className="w-screen min-h-40 absolute rounded-2xl text-center top-52 flex justify-center"
+      className="w-screen rounded-2xl text-center profileBox flex justify-center"
       initial={{ scale: 0 }}
       animate={{ scale: 1 }}
       exit={{ scale: 0 }}
       transition={{ type: "tween" }}
       key="logout-modal"
+      onClick={(e) => closeProfileModel(e)}
     >
-      <div className="w-fit h-full rounded-2xl p-10 bg-gray-900">
-        <h2 className="text-white">Are you sure want to Logout ?</h2>
-        <div className="mt-6 flex justify-around">
-          <button className="px-4 py-2 rounded-4xl bg-red-500 hover:bg-red-700 text-white">
-            No
-            <ImCancelCircle size={"25px"} className="inline-block ml-3" />
-          </button>
-
-          <button className="px-4 py-2 rounded-4xl bg-green-500 hover:bg-green-700 text-white ml-4">
-            Yes
-            <TiTick size={"25px"} className="inline-block ml-3" />
+      <div className="w-full h-full lg:w-2xl rounded-2xl p-10 bg-gray-900">
+        <div className="flex justify-end">
+          <ImCancelCircle
+            className="text-white text-2xl active:scale-75 transition-all"
+            onClick={() => dispatch(setGroupChatModal())}
+          />
+        </div>
+        <h2 className="text-white">Create Group Chat</h2>
+        <div className="text-left text-white">
+          <h2>Group Name :</h2>
+          <input
+            type="text"
+            className="w-full p-3 border-amber-600 outline-0 border-2 rounded-2xl"
+          ></input>
+          <div className="w-full mt-3 p-3 border-amber-600 outline-0 border-2 rounded-2xl min-h-20"></div>
+          <button className="mt-3 bg-amber-700 active:scale-75 transition-all hover:bg-amber-900">
+            <CiCirclePlus className="inline-block mr-2" size={"25px"} />
+            Add users
           </button>
         </div>
+        <button className=" mt-3 bg-green-600 active:scale-75 transition-all hover:bg-green-900">
+          Create Group
+        </button>
       </div>
     </motion.div>
   );
