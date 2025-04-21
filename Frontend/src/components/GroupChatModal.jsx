@@ -8,9 +8,10 @@ import { TiTick } from "react-icons/ti";
 import { CiCirclePlus } from "react-icons/ci";
 import { setAddUserPopup, setGroupChatModal } from "../store/asyncCalls";
 import AddUserPopup from "./AddUserPopup";
+import { Avatar, Tag } from "antd";
 
 function GroupChatModal() {
-  const { addUserPopup } = useSelector((store) => store.users);
+  const { addUserPopup, addGroupUsers } = useSelector((store) => store.users);
   const dispatch = useDispatch();
   const closeProfileModel = (e) => {
     //Find the surrounded Div ,
@@ -44,7 +45,20 @@ function GroupChatModal() {
             type="text"
             className="w-full p-3 border-amber-600 outline-0 border-2 rounded-2xl"
           ></input>
-          <div className="w-full mt-3 p-3 border-amber-600 outline-0 border-2 rounded-2xl min-h-20"></div>
+          <div className="w-full mt-3 p-3 border-amber-600 outline-0 border-2 rounded-2xl min-h-20">
+            {addGroupUsers.length > 0 ? (
+              <>
+                {addGroupUsers.map((user, i) => (
+                  <Tag key={i} color="green" closable>
+                    <Avatar src={user.profilePic}></Avatar>
+                    {user.username}
+                  </Tag>
+                ))}
+              </>
+            ) : (
+              <h2 className="text center">Please add Users</h2>
+            )}
+          </div>
           <button
             className="mt-3 bg-amber-700 active:scale-75 transition-all hover:bg-amber-900"
             onClick={() => dispatch(setAddUserPopup())}

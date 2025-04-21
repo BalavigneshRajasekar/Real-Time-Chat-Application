@@ -1,12 +1,17 @@
 /* eslint-disable no-unused-vars */
 import { Avatar } from "antd";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setAddGroupUsers } from "../store/asyncCalls";
 
 function AddUserPopup() {
+  const dispatch = useDispatch();
   const { receiverData } = useSelector((store) => store.users);
 
-  const addUsers = () => {};
+  const addUsers = (e, user) => {
+    console.log(user);
+    dispatch(setAddGroupUsers({ isChecked: e.target.checked, user }));
+  };
   return (
     <div className="w-fit h-fit bg-white rounded-2xl absolute top-72 p-3">
       <h1>Select User</h1>

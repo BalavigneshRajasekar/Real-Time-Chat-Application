@@ -50,6 +50,7 @@ const asyncCalls = createSlice({
     messages: [], // all messages between current sender and current receiver
     lastMessages: {}, //last message of each recipient sended to sender
     allMessages: {}, // all messages between current sender and current receiver
+    addGroupUsers: [], //Contains the particular group user while creating
     //--------------------------
     // Modal controller state
     logoutModal: false,
@@ -140,6 +141,20 @@ const asyncCalls = createSlice({
         ? action.payload
         : !state.addUserPopup;
     },
+
+    setAddGroupUsers: (state, action) => {
+      console.log(action.payload);
+      //If checked means we first add users
+      if (action.payload.isChecked) {
+        state.addGroupUsers = [...state.addGroupUsers, action.payload.user];
+      }
+      //once uncheck we need to remove user so we filter the user with id who unchecked
+      else {
+        state.addGroupUsers = state.addGroupUsers.filter(
+          (users) => users._id !== action.payload.user._id
+        );
+      }
+    },
   },
 
   extraReducers: (builder) => {
@@ -184,5 +199,6 @@ export const {
   setProfileModal,
   setGroupChatModal,
   setAddUserPopup,
+  setAddGroupUsers,
 } = asyncCalls.actions;
 export default asyncCalls.reducer;
