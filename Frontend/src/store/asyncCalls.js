@@ -55,6 +55,7 @@ const asyncCalls = createSlice({
     logoutModal: false,
     profileModal: false,
     groupChatModal: false,
+    addUserPopup: false,
     //----------------------
     //Error and Loading controller state
     error: null,
@@ -128,8 +129,19 @@ const asyncCalls = createSlice({
       state.groupChatModal = action.payload
         ? action.payload
         : !state.groupChatModal;
+
+      //Whenever Group creating model is closed this pop also close
+      if (state.addUserPopup) {
+        state.addUserPopup = !state.addUserPopup;
+      }
+    },
+    setAddUserPopup: (state, action) => {
+      state.addUserPopup = action.payload
+        ? action.payload
+        : !state.addUserPopup;
     },
   },
+
   extraReducers: (builder) => {
     builder
       .addCase(getUserData.pending, (state) => {
@@ -171,5 +183,6 @@ export const {
   setLogoutModal,
   setProfileModal,
   setGroupChatModal,
+  setAddUserPopup,
 } = asyncCalls.actions;
 export default asyncCalls.reducer;

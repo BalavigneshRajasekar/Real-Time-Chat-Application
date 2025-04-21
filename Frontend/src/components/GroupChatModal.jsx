@@ -2,13 +2,15 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { motion } from "motion/react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ImCancelCircle } from "react-icons/im";
 import { TiTick } from "react-icons/ti";
 import { CiCirclePlus } from "react-icons/ci";
-import { setGroupChatModal } from "../store/asyncCalls";
+import { setAddUserPopup, setGroupChatModal } from "../store/asyncCalls";
+import AddUserPopup from "./AddUserPopup";
 
 function GroupChatModal() {
+  const { addUserPopup } = useSelector((store) => store.users);
   const dispatch = useDispatch();
   const closeProfileModel = (e) => {
     //Find the surrounded Div ,
@@ -43,7 +45,10 @@ function GroupChatModal() {
             className="w-full p-3 border-amber-600 outline-0 border-2 rounded-2xl"
           ></input>
           <div className="w-full mt-3 p-3 border-amber-600 outline-0 border-2 rounded-2xl min-h-20"></div>
-          <button className="mt-3 bg-amber-700 active:scale-75 transition-all hover:bg-amber-900">
+          <button
+            className="mt-3 bg-amber-700 active:scale-75 transition-all hover:bg-amber-900"
+            onClick={() => dispatch(setAddUserPopup())}
+          >
             <CiCirclePlus className="inline-block mr-2" size={"25px"} />
             Add users
           </button>
@@ -52,6 +57,7 @@ function GroupChatModal() {
           Create Group
         </button>
       </div>
+      {addUserPopup && <AddUserPopup />}
     </motion.div>
   );
 }
