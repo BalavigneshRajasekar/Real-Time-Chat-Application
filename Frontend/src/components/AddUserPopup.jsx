@@ -16,7 +16,7 @@ function AddUserPopup() {
   return (
     <div className="w-fit h-fit bg-white rounded-2xl absolute top-72 p-3">
       <div className="flex justify-between  items-center ">
-        <h1>Select user</h1>
+        <h1>Select user :</h1>
         <MdCancel
           className="inline-block text-2xl hover:text-red-700 active:scale-75 transition-all"
           onClick={() => dispatch(setAddUserPopup())}
