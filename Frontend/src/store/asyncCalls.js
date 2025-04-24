@@ -155,6 +155,11 @@ const asyncCalls = createSlice({
         );
       }
     },
+    removeGroupUser: (state, action) => {
+      state.addGroupUsers = state.addGroupUsers.filter(
+        (value) => value._id !== action.payload._id
+      );
+    },
   },
 
   extraReducers: (builder) => {
@@ -200,5 +205,6 @@ export const {
   setGroupChatModal,
   setAddUserPopup,
   setAddGroupUsers,
+  removeGroupUser,
 } = asyncCalls.actions;
 export default asyncCalls.reducer;

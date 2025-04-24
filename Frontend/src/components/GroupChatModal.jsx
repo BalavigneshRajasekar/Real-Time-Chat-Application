@@ -6,7 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { ImCancelCircle } from "react-icons/im";
 import { TiTick } from "react-icons/ti";
 import { CiCirclePlus } from "react-icons/ci";
-import { setAddUserPopup, setGroupChatModal } from "../store/asyncCalls";
+import {
+  removeGroupUser,
+  setAddUserPopup,
+  setGroupChatModal,
+} from "../store/asyncCalls";
 import AddUserPopup from "./AddUserPopup";
 import { Avatar, Tag } from "antd";
 
@@ -21,9 +25,7 @@ function GroupChatModal() {
       dispatch(setGroupChatModal());
     }
   };
-  useEffect(() => {
-    return () => {};
-  }, []);
+
   return (
     <motion.div
       className="w-screen rounded-2xl text-center profileBox flex justify-center"
@@ -52,7 +54,12 @@ function GroupChatModal() {
             {addGroupUsers.length > 0 ? (
               <>
                 {addGroupUsers.map((user, i) => (
-                  <Tag key={i} color="green" closable>
+                  <Tag
+                    key={user._id}
+                    color="green"
+                    closable
+                    onClose={() => dispatch(removeGroupUser(user))}
+                  >
                     <Avatar src={user.profilePic}></Avatar>
                     {user.username}
                   </Tag>
