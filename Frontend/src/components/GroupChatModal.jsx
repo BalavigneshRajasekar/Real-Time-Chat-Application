@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "motion/react";
 import { useDispatch, useSelector } from "react-redux";
 import { ImCancelCircle } from "react-icons/im";
@@ -21,6 +21,9 @@ function GroupChatModal() {
       dispatch(setGroupChatModal());
     }
   };
+  useEffect(() => {
+    return () => {};
+  }, []);
   return (
     <motion.div
       className="w-screen rounded-2xl text-center profileBox flex justify-center"
