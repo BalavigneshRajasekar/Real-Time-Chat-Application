@@ -3,11 +3,17 @@ import { Avatar } from "antd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MdCancel } from "react-icons/md";
-import { setAddGroupUsers, setAddUserPopup } from "../store/asyncCalls";
+import {
+  searchGroupUser,
+  setAddGroupUsers,
+  setAddUserPopup,
+} from "../store/asyncCalls";
 
 function AddUserPopup() {
   const dispatch = useDispatch();
-  const { receiverData, addGroupUsers } = useSelector((store) => store.users);
+  const { groupSearchFilter, addGroupUsers } = useSelector(
+    (store) => store.users
+  );
 
   const addUsers = (e, user) => {
     console.log(user);
@@ -20,19 +26,23 @@ function AddUserPopup() {
     return addGroupUsers.some((user) => user._id == newUser._id);
   };
   return (
-    <div className="w-fit h-fit bg-white rounded-2xl absolute top-72 p-3">
-      <div className="flex justify-between  items-center ">
-        <h1>Select user :</h1>
+    <div className="w-fit h-fit bg-white rounded-2xl absolute top-80 p-3">
+      <div className="flex justify-between  items-center gap-3">
+        <input
+          autoFocus
+          onChange={(e) => dispatch(searchGroupUser(e.target.value))}
+          placeholder="Search User"
+          type="search"
+          className="w-full h-10 rounded-2xl p-3 text-center border-amber-600 border-2 outline-0"
+        ></input>
         <MdCancel
-          className="inline-block text-2xl hover:text-red-700 active:scale-75 transition-all"
+          className="inline-block text-4xl hover:text-red-700 active:scale-75 transition-all"
           onClick={() => dispatch(setAddUserPopup())}
         />
       </div>
-      <div>
-        <input type="search" className="w-100"></input>
-      </div>
+
       <div className="min-h-20 max-h-52 overflow-y-auto mt-3">
-        {receiverData.map((users, i) => (
+        {groupSearchFilter.map((users, i) => (
           <div key={i} className="flex gap-3 mt-3 items-center">
             <input
               type="checkbox"

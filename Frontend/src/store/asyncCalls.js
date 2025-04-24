@@ -52,6 +52,9 @@ const asyncCalls = createSlice({
     allMessages: {}, // all messages between current sender and current receiver
     addGroupUsers: [], //Contains the particular group user while creating
     //--------------------------
+
+    //Filter Data for search options
+    groupSearchFilter: [],
     // Modal controller state
     logoutModal: false,
     profileModal: false,
@@ -142,6 +145,7 @@ const asyncCalls = createSlice({
         : !state.addUserPopup;
     },
 
+    //Adding user to group chat from creating
     setAddGroupUsers: (state, action) => {
       console.log(action.payload);
       //If checked means we first add users
@@ -155,9 +159,17 @@ const asyncCalls = createSlice({
         );
       }
     },
+    //Remove user from group chat from creating
     removeGroupUser: (state, action) => {
       state.addGroupUsers = state.addGroupUsers.filter(
         (value) => value._id !== action.payload._id
+      );
+    },
+
+    //search filter to find user while creating group chat
+    searchGroupUser: (state, action) => {
+      state.groupSearchFilter = state.receiverData.filter((value) =>
+        value.username.toLowerCase().includes(action.payload)
       );
     },
   },
@@ -170,6 +182,7 @@ const asyncCalls = createSlice({
       .addCase(getUserData.fulfilled, (state, action) => {
         state.loading = false;
         state.receiverData = action.payload;
+        state.groupSearchFilter = action.payload;
       })
       .addCase(getUserData.rejected, (state, action) => {
         state.loading = false;
@@ -206,5 +219,6 @@ export const {
   setAddUserPopup,
   setAddGroupUsers,
   removeGroupUser,
+  searchGroupUser,
 } = asyncCalls.actions;
 export default asyncCalls.reducer;
