@@ -53,7 +53,7 @@ class ResetPassword {
       console.log("link", token);
 
       //Generate Reset Link Mail
-      const urlForRestLink = `http://localhost:5173/resetPassword/?token=${token}&&username=${user.username}`;
+      const urlForRestLink = `https://chathub-three-flax.vercel.app/resetPassword/?token=${token}&&username=${user.username}`;
       const template = resetLinkTemplate.replace(
         "{{URL_FORM}}",
         urlForRestLink
