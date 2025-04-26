@@ -23,6 +23,7 @@ function LogoutModal() {
       transition={{ type: "tween" }}
       key="logout-modal"
     >
+      {/* Body div contains data */}
       <div className="w-fit h-full rounded-2xl p-10 bg-gray-900">
         <h2 className="text-white">Are you sure want to Logout ?</h2>
         <div className="mt-6 flex justify-around">

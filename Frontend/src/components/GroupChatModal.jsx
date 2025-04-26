@@ -36,6 +36,7 @@ function GroupChatModal() {
       key="logout-modal"
       onClick={(e) => closeProfileModel(e)}
     >
+      {/* Main inner div */}
       <div className="w-full h-full lg:w-2xl rounded-2xl p-10 bg-gray-900">
         <div className="flex justify-end">
           <ImCancelCircle
