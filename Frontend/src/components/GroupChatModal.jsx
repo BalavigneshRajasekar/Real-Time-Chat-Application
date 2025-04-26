@@ -44,12 +44,15 @@ function GroupChatModal() {
           />
         </div>
         <h2 className="text-white">Create Group Chat</h2>
+
+        {/* Group chat Creation body */}
         <div className="text-left text-white">
           <h2>Group Name :</h2>
           <input
             type="text"
             className="w-full p-3 border-amber-600 outline-0 border-2 rounded-2xl"
           ></input>
+          {/* Show selected users */}
           <div className="w-full mt-3 p-3 border-amber-600 outline-0 border-2 rounded-2xl min-h-20">
             {addGroupUsers.length > 0 ? (
               <>
