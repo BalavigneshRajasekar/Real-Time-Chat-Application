@@ -27,6 +27,7 @@ function AddUserPopup() {
   };
   return (
     <div className="w-fit h-fit bg-white rounded-2xl absolute top-80 p-3">
+      {/* PopUP header */}
       <div className="flex justify-between  items-center gap-3">
         <input
           autoFocus
@@ -40,7 +41,7 @@ function AddUserPopup() {
           onClick={() => dispatch(setAddUserPopup())}
         />
       </div>
-
+      {/* Popup Body */}
       <div className="min-h-20 max-h-52 overflow-y-auto mt-3">
         {groupSearchFilter.map((users, i) => (
           <div key={i} className="flex gap-3 mt-3 items-center">
