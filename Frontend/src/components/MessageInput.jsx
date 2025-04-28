@@ -72,6 +72,7 @@ function MessageInput() {
         />
         <img src={img} className="w-40  rounded-2xl"></img>
       </div>
+      {/* Text area for message */}
       <div className="flex items-center gap-2 p-2 bg-gray-200 rounded-b-md  w-full px-3">
         <textarea
           onFocus={handleFocus}
