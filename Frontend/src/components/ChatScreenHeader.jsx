@@ -16,6 +16,7 @@ function ChatScreenHeader({ changeScreen }) {
   return (
     <>
       <div className="bg-gray-300 flex gap-3 p-2 rounded-t-md relative">
+        {/* Body div 1 */}
         <div>
           <IoMdArrowBack
             size={"30px"}
@@ -39,6 +40,7 @@ function ChatScreenHeader({ changeScreen }) {
             }
           ></Image>
         </div>
+        {/* Body div 2 */}
         <div>
           <h2>{currentRecipient.username}</h2>
           {onlineUsers?.includes(currentRecipient._id) ? (
