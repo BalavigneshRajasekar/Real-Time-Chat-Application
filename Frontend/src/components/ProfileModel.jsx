@@ -31,6 +31,7 @@ function ProfileModel() {
   const sendProfileToServer = async ({ file, onSuccess }) => {
     const data = new FormData();
     data.append("profile", file);
+
     try {
       const response = await uploadProfilePic(data);
       toast.success(response);
@@ -89,7 +90,7 @@ function ProfileModel() {
             ></Avatar>
             <Upload
               disabled={isProfileUpdating}
-              accept=".jpg"
+              accept="image/*"
               customRequest={sendProfileToServer}
               onChange={showProfilePic}
               showUploadList={false}

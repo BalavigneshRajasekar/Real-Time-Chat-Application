@@ -49,7 +49,7 @@ function Home() {
           {/* Search bar for search user */}
           <SearchBar />
           {/* List of user name cards */}
-          {receiverData.length > 0 ? (
+          {receiverData.length >= 0 ? (
             receiverData.map((value, i) => {
               return (
                 <UserNameCard

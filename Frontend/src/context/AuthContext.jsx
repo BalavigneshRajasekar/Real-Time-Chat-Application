@@ -156,6 +156,8 @@ const AuthProvider = ({ children }) => {
     setIsProfileUpdating(true);
     try {
       const response = await axiosInstance.post("/app/addProfile", profile);
+      console.log(response);
+
       return response.data.message;
     } catch (e) {
       console.log("context", e);

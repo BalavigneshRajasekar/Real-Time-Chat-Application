@@ -30,7 +30,7 @@ server.use(
 ); //Handle Cors for entire app
 server.use(cookies()); //Handle cookies
 server.use(express.json()); //parse incoming payload
-server.use(express.urlencoded({ extended: true })); // accept nested object and array value in form data
+server.use(express.urlencoded({ limit: "100mb", extended: true })); // accept nested object and array value in form data
 
 // Socket initialized with server
 const io = socketIo(httpForSocket, {

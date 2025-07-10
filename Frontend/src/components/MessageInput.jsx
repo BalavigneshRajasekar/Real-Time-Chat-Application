@@ -30,6 +30,7 @@ function MessageInput() {
       read: false,
       createdAt: Date.now(),
     };
+    console.log(newMessage);
 
     dispatch(setMessages({ newMessage, userId }));
     socket.emit("sendMessage", {
@@ -83,7 +84,7 @@ function MessageInput() {
           placeholder="Type a message..."
           rows={1}
         />
-        <Upload accept=".jpg" fileList={[]} onChange={handleImageUpload}>
+        <Upload accept="image/*" fileList={[]} onChange={handleImageUpload}>
           <FaImage className="text-3xl active:scale-95 transition-all"></FaImage>
         </Upload>
         <button onClick={sendMessage}>Send</button>

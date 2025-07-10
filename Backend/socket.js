@@ -21,6 +21,7 @@ const mainSocket = (io) => {
       "sendMessage",
       async ({ userId, receiver, text, img, createdAt, delivered }) => {
         let imgUrl = img;
+
         const newMessages = {
           senderID: userId,
           receiverID: receiver,
