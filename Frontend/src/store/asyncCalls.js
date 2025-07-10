@@ -79,7 +79,6 @@ const asyncCalls = createSlice({
 
       //Destructure the payload Data
       const { newMessage, userId } = action.payload;
-      console.log(action.payload);
 
       const { receiverID, senderID } = newMessage;
 
@@ -104,7 +103,6 @@ const asyncCalls = createSlice({
     setMessageSeen: (state, action) => {
       //TODO set message seen logic whenever We get received message
       const { receiverID, senderID } = action.payload;
-      console.log(action.payload);
 
       // update seen as true when ever this method dispatched
       if (state.allMessages[receiverID]) {
