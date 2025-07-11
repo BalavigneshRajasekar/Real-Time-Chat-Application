@@ -103,8 +103,6 @@ const mainSocket = (io) => {
 
     // Listen for typing event from client
     socket.on("listenTyping", (receiverID, userId) => {
-      console.log(receiverID);
-
       if (manageUser.has(receiverID)) {
         manageUser.get(receiverID).forEach((receiverSocket) => {
           io.to(receiverSocket).emit("typing", userId);
