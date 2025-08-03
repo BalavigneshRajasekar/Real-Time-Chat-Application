@@ -12,7 +12,7 @@ const SocketProvider = ({ children }) => {
   const [onlineUsers, setOnlineUsers] = useState();
 
   useEffect(() => {
-    const socket = io("http://localhost:3000", {
+    const socket = io("https://chathub-three-flax.vercel.app", {
       withCredentials: true,
     });
     SetSocket(socket);
